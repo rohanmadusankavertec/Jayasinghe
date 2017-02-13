@@ -63,11 +63,13 @@
 
     <center>
         <h2>JAYASINGHE CONSTRUCTION PVT (LTD).</h2>
+        
         <table style="border: 1px solid #000;">
             <tr>
                 <td>DELIVERY NOTE / INVOICE</td>
             </tr>
         </table>
+        <div style="font-size: 13px;">
         <table style="width: 100%;">
             <tr>
                 <td>
@@ -280,7 +282,7 @@
 
 
 
-
+        </div>
 
 
 
