@@ -26,15 +26,10 @@
                 html, body {
                     display: block; 
                     font-family: "Calibri";
-                    margin: 1.5cm;
+                    margin: 0;
                 }
-
                 @page {
-                    size: 21.59cm 13.97cm;
-                }
-
-                .logo {
-                    width: 30%;
+                    size: 21.59cm 13.97cm ;
                 }
 
             }
