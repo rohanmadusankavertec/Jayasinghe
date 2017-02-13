@@ -27,9 +27,12 @@
                     display: block; 
                     font-family: "Calibri";
                     margin: 0;
+                    size: 21.59cm 13.97cm ;
+                    size: portrait;
                 }
                 @page {
                     size: 21.59cm 13.97cm ;
+                    size: portrait;
                 }
 
             }
@@ -120,7 +123,7 @@
                 </td>
             </tr>
         </table>
-                <div style="height: 150px;">
+                <div style="height: 100px;">
         <table style="width: 100%; margin-top: 5px;border:1px solid #000 ;border-collapse: collapse;">
 
             <tr style="border: 1px solid black;">
@@ -183,22 +186,22 @@
                             
                             
                             <table>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Arrive Time</td>
                                     <td>:</td>
                                     <td><%=iin.getIntime()%></td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Loaded Time </td>
                                     <td>:</td>
                                     <td><%=iin.getLoadtime()%></td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Driver's sign</td>
                                     <td>:</td>
                                     <td>.........................</td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Other</td>
                                     <td>:</td>
                                     <td>.........................</td>
@@ -216,22 +219,22 @@
                             
                             
                             <table>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Supervisor</td>
                                     <td>:</td>
                                     <td><%=iin.getSupervisorId().getName()%></td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Sign </td>
                                     <td>:</td>
                                     <td>.........................</td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Receiver</td>
                                     <td>:</td>
                                     <td><%=iin.getReceiver() %></td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Sign</td>
                                     <td>:</td>
                                     <td>.........................</td>
@@ -246,22 +249,22 @@
                             
                             
                             <table>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Sec. Off.</td>
                                     <td>:</td>
                                     <td><%=iin.getSecurityOfficerId().getName()%></td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Sign </td>
                                     <td>:</td>
                                     <td>.........................</td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td>Time</td>
                                     <td>:</td>
                                     <td>.........................</td>
                                 </tr>
-                                <tr style="height: 30px;">
+                                <tr style="height: 20px;">
                                     <td></td>
                                     <td></td>
                                     <td></td>
