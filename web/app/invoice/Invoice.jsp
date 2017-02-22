@@ -105,7 +105,6 @@
         } else if (transport === "") {
             sm_warning("Please enter the transport amount");
         } else {
-
             var items = {};
             var catarr = cat2.split("~~");
             var catId = catarr[0];
@@ -327,7 +326,7 @@
         var height = document.getElementById('height').value;
         var aspace = parseFloat(document.getElementById('availablespace').innerHTML);
         var ispace = parseFloat(document.getElementById('invoicespace').innerHTML);
-        if (aspace > ispace) {
+        if (aspace >= ispace) {
             var vno = document.getElementById('vno').value;
             var reached = document.getElementById('reached').value;
             var loaded = document.getElementById('loaded').value;
@@ -493,13 +492,27 @@
                                 <input type="hidden" value="<%=name%>" id="name"/>
                                 <input type="hidden" value="<%=supervisor%>" id="supervisor"/>
                                 <input type="hidden" value="<%=securityofficer%>" id="security"/>
-                                <input type="hidden" value="<%=customer.getId()%>" id="customer"/>
+                                
                                 <%
                                     Date date = new Date();
                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                     String date2 = sdf.format(date);
-                                %>
+                                    
 
+                                    String cusid="";
+                                    String cusname="";
+                                    String cusadd="";
+                                    
+                                    if(customer!=null){
+                                        cusid=customer.getId()+"";
+                                        cusname=customer.getName();
+                                        cusadd=customer.getName();
+                                    }
+
+
+
+                                %>
+                                <input type="hidden" value="<%=cusid%>" id="customer"/>
                                 <small class="pull-right"><%=date2%><span id="datetime"></span></small>
                             </h1>
                         </div>
@@ -517,15 +530,18 @@
                         <!-- /.col -->
                         <div class="col-sm-12 col-lg-6 col-md-6 invoice-col">
                             To
-                            <input type="hidden" id="customerId" name="customerId" required="required" class="form-control col-md-7 col-xs-12" value="<%=customer.getId()%>">
+                            <input type="hidden" id="customerId" name="customerId" required="required" class="form-control col-md-7 col-xs-12" value="<%=cusid%>">
                             <address>
-                                <strong><%=customer.getName()%></strong><br/>
-                                <%=customer.getAddress().replace(",", "<br>")%>
+                                <strong><%=cusname%></strong><br/>
+                                <%
+                                    if(!cusadd.equals("")){
+                                    out.write(cusadd.replace(",", "<br>"));
+                                    }
+                                    
+                                    %>
                             </address>
                         </div>
                     </div>
-
-
 
                     <form action="#" method="post" class="form-horizontal form-label-left" validate>
                         <span class="section">Invoice</span>
@@ -586,8 +602,12 @@
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th style="width:50%">Available Space</th>
-                                        <td id="availablespace"><%= ((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 100)%> Cubes</td>
+                                        <th style="width:50%">Available Space (Cubes)</th>
+                                        <td id="availablespace"><%= Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / (1728*100)) * 100.0) / 100.0       %> Cubes</td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:50%">Available Space (cubic feet)</th>
+                                        <td id="availablespace"><%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %> Cubic Feet</td>
                                     </tr>
                                     <tr>
                                         <th style="width:50%">Invoice Space</th>

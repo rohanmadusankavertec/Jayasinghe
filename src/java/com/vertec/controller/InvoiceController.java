@@ -70,7 +70,7 @@ public class InvoiceController extends HttpServlet {
             RequestDispatcher requestDispatcher;
 
             switch (action) {
-                
+
                 //Open Create invoice page
                 case "ToCreateInvoice": {
                     List<Customer> customer = registrationdao.getListOfCustomer();
@@ -85,7 +85,7 @@ public class InvoiceController extends HttpServlet {
                 }
                 //Open Invoice Page
                 case "ToInvoice": {
-                    String customer = request.getParameter("customer").trim();
+                    String customer = request.getParameter("customer");
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
                     String v_long = request.getParameter("long").trim();
@@ -97,9 +97,10 @@ public class InvoiceController extends HttpServlet {
                     String securityOfficer = request.getParameter("securityOfficer").trim();
                     List<Category> category = registrationdao.getListOfCategory();
                     request.setAttribute("category", category);
-
-                    Customer cus = registrationdao.viewCustomer(Integer.parseInt(customer));
-
+                    Customer cus = null;
+                    if (customer != null) {
+                        cus = registrationdao.viewCustomer(Integer.parseInt(customer));
+                    }
                     request.setAttribute("customer", cus);
                     request.setAttribute("vehicleNo", vehicleNo);
                     request.setAttribute("width", v_width);
@@ -150,9 +151,8 @@ public class InvoiceController extends HttpServlet {
                     String payment = jSONObject.get("payment").toString();
                     String outstanding = jSONObject.get("outstanding").toString();
                     String payType = jSONObject.get("payType").toString();
-                    
+
 //                    String predata = jSONObject.get("maindata").toString();
-                    
 //                    String[] prearr=predata.split("~");
 //                    
 //                    String vno = prearr[0];
@@ -173,8 +173,6 @@ public class InvoiceController extends HttpServlet {
 //                    String payment = prearr[14];
 //                    String outstanding = prearr[15];
 //                    String payType = prearr[16];
-                    
-                    
                     JSONObject itemDetails = (JSONObject) jSONObject.get("items");
                     Collection<Invoice> invoiceItemList = new ArrayList<>();
                     InvoiceInfo invoiceinfo = new InvoiceInfo();
@@ -202,8 +200,13 @@ public class InvoiceController extends HttpServlet {
                     invoiceinfo.setSecurityOfficerId(new SecurityOfficer(Integer.parseInt(security)));
                     invoiceinfo.setReceiver(name);
                     System.out.println(customer);
-                    int Customer = Integer.parseInt(customer);
-                    invoiceinfo.setCustomerId(new Customer(Customer));
+                    if (!customer.equals("")) {
+                        int Customer = Integer.parseInt(customer);
+                        invoiceinfo.setCustomerId(new Customer(Customer));
+                    } else {
+                        invoiceinfo.setCustomerId(null);
+                    }
+
                     SimpleDateFormat TimeFormat = new SimpleDateFormat("hh:mm"); //if 24 hour format
                     Date reachedTime = null;
                     Date loadedTime = null;
@@ -237,13 +240,13 @@ public class InvoiceController extends HttpServlet {
                         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 
                         Date chequedate = null;
-                        if(chequeDate.equals("") || chequeDate==null){
-                        }else{
-                        try {
-                            chequedate = date.parse(chequeDate);
-                        } catch (java.text.ParseException ex) {
-                            ex.printStackTrace();
-                        }
+                        if (chequeDate.equals("") || chequeDate == null) {
+                        } else {
+                            try {
+                                chequedate = date.parse(chequeDate);
+                            } catch (java.text.ParseException ex) {
+                                ex.printStackTrace();
+                            }
                         }
                         pay.setChequeDate(chequedate);
                         pay.setChequeNo(chequeNo);
@@ -395,8 +398,15 @@ public class InvoiceController extends HttpServlet {
                 //Open print view ofs Last Invoice
                 case "PrintLastInvoice": {
                     int id = invoicedao.getLastInvoice();
-                    System.out.println(id+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-                    response.sendRedirect("app/invoice/InvoicePrint.jsp?id="+id);
+                    System.out.println(id + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                    response.sendRedirect("app/invoice/InvoicePrint.jsp?id=" + id);
+                    break;
+                }
+                //Load vehicle width, height , depth by id
+                case "getVehicle": {
+                    String id = request.getParameter("id").trim();
+                    String result = invoicedao.getVehicle(id);
+                    out.write(result);
                     break;
                 }
             }

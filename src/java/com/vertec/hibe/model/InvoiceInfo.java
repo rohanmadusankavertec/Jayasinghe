@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author vertec-r
+ * @author Rohan Madusanka @Contact 071 - 9085504 @E-mail
+ * rohanmadusanka72@gmail.com
  */
 @Entity
 @Table(name = "invoice_info")
@@ -82,7 +83,7 @@ public class InvoiceInfo implements Serializable {
     @Column(name = "receiver")
     private String receiver;
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Customer customerId;
     @JoinColumn(name = "security_officer_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

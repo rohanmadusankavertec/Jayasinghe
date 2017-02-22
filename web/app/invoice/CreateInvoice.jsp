@@ -14,6 +14,42 @@
 
 <%@include file="../../template/header.jsp"%>
 <%@include file="../../template/sidebar.jsp"%>
+
+ <script type="text/javascript">
+            
+            function getVehicle(){
+                
+                var xmlHttp = getAjaxObject();
+                        xmlHttp.onreadystatechange = function ()
+                        {
+                            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+                            {
+                                var reply = xmlHttp.responseText;
+                                
+                                if(reply.length>2){
+                                    var arr = reply.split("~");
+                                    document.getElementById("width").value=arr[0];
+                                    document.getElementById("height").value=arr[1];
+                                    document.getElementById("long").value=arr[2];
+                                }else{
+                                    document.getElementById("width").value="";
+                                    document.getElementById("height").value="";
+                                    document.getElementById("long").value="";
+                                }
+                            }
+                        };
+                        var id =document.getElementById("vehicleNo").value;
+                        xmlHttp.open("POST", "Invoice?action=getVehicle&id=" + id, true);
+                        xmlHttp.send();
+            }
+            
+            
+            
+        </script>
+
+
+
+
 <%
     List<Customer> customer = (List<Customer>) request.getAttribute("customer");
     List<Supervisor> supervisor = (List<Supervisor>) request.getAttribute("supervisor");
@@ -44,7 +80,7 @@
                         <div class="item form-group">
                             <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Customer</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" name="customer" id="customer"  required="required" >
+                                <select class="form-control" name="customer" id="customer">
                                     <option value="" disabled selected="true">Select Customer</option>
                                     <%                                        for (Customer c : customer) {
                                     %>
@@ -58,49 +94,49 @@
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Number</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="vehicleNo" placeholder="Enter Vehicle Number" required="required" type="text">
+                                <input class="form-control col-md-7 col-xs-12" onkeyup="getVehicle()" data-validate-words="1" id="vehicleNo" name="vehicleNo" placeholder="Enter Vehicle Number" required="required" type="text">
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (Feet)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="width" placeholder="Enter Vehicle Width" required="required" type="number">
+                                <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text">
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Long (Feet)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="long" placeholder="Enter Vehicle Long" required="required" type="number">
+                                <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text">
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (Feet)</label>
+                                <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="height" placeholder="Enter Vehicle Height" required="required" type="number">
+                                <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Arrive Time</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="Reached" placeholder="Enter the Arrive Time" required="required" type="time">
+                                <input class="form-control col-md-7 col-xs-12"  name="Reached" placeholder="Enter the Arrive Time" type="time">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loaded Time</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="Loaded" placeholder="Enter the Loaded Time" required="required" type="time">
+                                <input class="form-control col-md-7 col-xs-12" name="Loaded" placeholder="Enter the Loaded Time" type="time">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Receiver Name</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="Name" placeholder="Enter the Receiver Name" required="required" type="text">
+                                <input class="form-control col-md-7 col-xs-12" name="Name" placeholder="Enter the Receiver Name" type="text">
                             </div>
                         </div>
                         <div class="item form-group">
                             <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Supervisor</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" name="supervisor" id="supervisor" required="required" >
+                                <select class="form-control" name="supervisor" id="supervisor" >
                                     <option value="" disabled selected="true">Select Supervisor</option>
                                     <%
                                         for (Supervisor c : supervisor) {
@@ -115,7 +151,7 @@
                         <div class="item form-group">
                             <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Security Officer</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" name="securityOfficer" id="securityOfficer" required="required" >
+                                <select class="form-control" name="securityOfficer" id="securityOfficer" >
                                     <option value="" disabled selected="true">Select Security Officer</option>
                                     <%
                                         for (SecurityOfficer c : securityofficer) {

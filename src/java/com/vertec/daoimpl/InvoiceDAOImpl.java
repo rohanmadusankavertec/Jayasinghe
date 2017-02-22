@@ -398,7 +398,26 @@ public class InvoiceDAOImpl {
             }
         }
         return null;
-
     }
-   
+   public String getVehicle(String id) {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("Select i from InvoiceInfo i where i.vehicleNo=:vno");
+                query.setParameter("vno", id);
+                query.setMaxResults(1);
+                InvoiceInfo invoice = (InvoiceInfo) query.uniqueResult();
+                if(invoice==null){
+                return invoice.getVWidth()+"~"+invoice.getVHeight()+"~"+invoice.getVLong();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return null;
+    }
 }
