@@ -383,59 +383,12 @@
                                 dataType: "json",
                                 success: function (msg) {
                                     nom_Success("Successfully Added");
-//                                    setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
+                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 1500);
                                 },
                                 error: function (errormessage) {
-                                    nom_Success("Successfully Added");
-//                                    setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
-                                    //do something else
-                                },
-                                complete: function (xhr) {
-//                                    alert(JSON.stringify(xhr));
-                                    console.log(xhr);
-                                    switch (xhr.status) {
-                                        case 404:
-//                                            alert("404");
-                                            console.log("404");
-                                        case 400:
-//                                            alert("400");
-                                            console.log("400");
-                                            
-                                            // Take action, referencing xhr.responseText as needed.
-                                    }
-//                                    nom_Success("Successfully Added");
-                                    setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
+                                    nom_warning("Somthing went wrong..");
                                 }
                             });
-
-//                            var xmlHttp = getAjaxObject();
-//                            xmlHttp.onreadystatechange = function ()
-//                            {
-//                                if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-//                                {
-//                                    var reply = xmlHttp.responseText;
-//                                    if (reply === "Success") {
-//                                        nom_Success("Successfully Added");
-//                                        setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
-//                                    } else {
-//                                        sm_warning("Invoice Not Correctly Entered Please Try Again");
-//                                    }
-//                                    nom_Success("Successfully Added");
-//                                        setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
-//                                }
-//                            };
-//                            xmlHttp.open("POST", "Invoice?action=SubmitInvoice&data=" + jsonDetails, true);
-//                            xmlHttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
-//                            xmlHttp.send();
-
-
-
-
-
-
-
-
-
                         }
                     }, {
                         label: 'No',

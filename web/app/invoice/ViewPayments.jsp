@@ -128,6 +128,7 @@
                                 <%}else{%>
                                 <tr>
                                 <%}%>
+                                
                                     <td class=" "><%=c.getId()%></td>
                                     <td class=" "><%=c.getDate()%></td>
                                     <td class=" "><%=c.getVehicleNo()%></td>
@@ -136,6 +137,7 @@
                                     <td class=" "><%=c.getLoadtime()%></td>
                                     <td class=" ">Rs: <%=c.getOutstanding()%></td>
                                     <td class="last"> 
+                                        
                                         <span class="btn btn-default glyphicon glyphicon-search text-center" onclick="OpenInvoice(<%=c.getId()%>)"></span>
                                         <span class="btn btn-default glyphicon glyphicon-remove text-center" onclick="DeleteInvoice(<%=c.getId()%>)"></span>
                                     </td>

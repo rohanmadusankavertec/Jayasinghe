@@ -15,37 +15,32 @@
 <%@include file="../../template/header.jsp"%>
 <%@include file="../../template/sidebar.jsp"%>
 
- <script type="text/javascript">
-            
-            function getVehicle(){
-                
-                var xmlHttp = getAjaxObject();
-                        xmlHttp.onreadystatechange = function ()
-                        {
-                            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-                            {
-                                var reply = xmlHttp.responseText;
-                                
-                                if(reply.length>2){
-                                    var arr = reply.split("~");
-                                    document.getElementById("width").value=arr[0];
-                                    document.getElementById("height").value=arr[1];
-                                    document.getElementById("long").value=arr[2];
-                                }else{
-                                    document.getElementById("width").value="";
-                                    document.getElementById("height").value="";
-                                    document.getElementById("long").value="";
-                                }
-                            }
-                        };
-                        var id =document.getElementById("vehicleNo").value;
-                        xmlHttp.open("POST", "Invoice?action=getVehicle&id=" + id, true);
-                        xmlHttp.send();
+<script type="text/javascript">
+    function getVehicle() {
+        var xmlHttp = getAjaxObject();
+        xmlHttp.onreadystatechange = function ()
+        {
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+            {
+                var reply = xmlHttp.responseText;
+
+                if (reply.length > 2) {
+                    var arr = reply.split("~");
+                    document.getElementById("width").value = arr[0];
+                    document.getElementById("height").value = arr[1];
+                    document.getElementById("long").value = arr[2];
+                } else {
+                    document.getElementById("width").value = "";
+                    document.getElementById("height").value = "";
+                    document.getElementById("long").value = "";
+                }
             }
-            
-            
-            
-        </script>
+        };
+        var id = document.getElementById("vehicleNo").value;
+        xmlHttp.open("POST", "Invoice?action=getVehicle&id=" + id, true);
+        xmlHttp.send();
+    }
+</script>
 
 
 
@@ -81,7 +76,7 @@
                             <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Customer</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <select class="form-control" name="customer" id="customer">
-                                    <option value="" disabled selected="true">Select Customer</option>
+                                    <option value="" selected="true">Select Customer</option>
                                     <%                                        for (Customer c : customer) {
                                     %>
                                     <option value="<%=c.getId()%>"><%=c.getName()%></option>
@@ -98,77 +93,91 @@
                             </div>
                         </div>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Qty Level</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text">
+                                <input type="checkbox" name="qtylvl"/> Full<br>
+                                <input type="checkbox" name="qtylvl"/> Custom
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text">
+                        </div>        
+                        <div class="clearfix">
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text">
+                                </div>
                             </div>
-                        </div>
-                                <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text">
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text">
+                                </div>
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Arrive Time</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12"  name="Reached" placeholder="Enter the Arrive Time" type="time">
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text">
+                                </div>
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loaded Time</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" name="Loaded" placeholder="Enter the Loaded Time" type="time">
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Qty (Cubic Feet) </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" id="qty" name="long" placeholder="Enter Vehicle Long" type="text">
+                                </div>
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Receiver Name</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" name="Name" placeholder="Enter the Receiver Name" type="text">
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Arrive Time</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12"  name="Reached" placeholder="Enter the Arrive Time" type="time">
+                                </div>
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Supervisor</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" name="supervisor" id="supervisor" >
-                                    <option value="" disabled selected="true">Select Supervisor</option>
-                                    <%
-                                        for (Supervisor c : supervisor) {
-                                    %>
-                                    <option value="<%=c.getId()%>"><%=c.getName()%></option>
-                                    <%
-                                        }
-                                    %>
-                                </select>
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loaded Time</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" name="Loaded" placeholder="Enter the Loaded Time" type="time">
+                                </div>
                             </div>
-                        </div>
-                        <div class="item form-group">
-                            <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Security Officer</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <select class="form-control" name="securityOfficer" id="securityOfficer" >
-                                    <option value="" disabled selected="true">Select Security Officer</option>
-                                    <%
-                                        for (SecurityOfficer c : securityofficer) {
-                                    %>
-                                    <option value="<%=c.getId()%>"><%=c.getName()%></option>
-                                    <%
-                                        }
-                                    %>
-                                </select>
+                            <div class="item form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Receiver Name</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" name="Name" placeholder="Enter the Receiver Name" type="text">
+                                </div>
                             </div>
-                        </div>
-                        <div class="ln_solid"></div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
-                                <button id="send" type="submit" class="btn btn-success">Next</button>
+                            <div class="item form-group">
+                                <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Supervisor</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" name="supervisor" id="supervisor" >
+                                        <option value="" disabled selected="true">Select Supervisor</option>
+                                        <%
+                                            for (Supervisor c : supervisor) {
+                                        %>
+                                        <option value="<%=c.getId()%>"><%=c.getName()%></option>
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                            <div class="item form-group">
+                                <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Security Officer</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <select class="form-control" name="securityOfficer" id="securityOfficer" >
+                                        <option value="" disabled selected="true">Select Security Officer</option>
+                                        <%
+                                            for (SecurityOfficer c : securityofficer) {
+                                        %>
+                                        <option value="<%=c.getId()%>"><%=c.getName()%></option>
+                                        <%
+                                            }
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <button id="send" type="submit" class="btn btn-success">Next</button>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>

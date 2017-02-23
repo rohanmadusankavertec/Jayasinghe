@@ -152,27 +152,6 @@ public class InvoiceController extends HttpServlet {
                     String outstanding = jSONObject.get("outstanding").toString();
                     String payType = jSONObject.get("payType").toString();
 
-//                    String predata = jSONObject.get("maindata").toString();
-//                    String[] prearr=predata.split("~");
-//                    
-//                    String vno = prearr[0];
-//                    String width = prearr[1];
-//                    String vlong = prearr[2];
-//                    String height = prearr[3];
-//                    String reached = prearr[4];
-//                    String loaded = prearr[5];
-//                    String name = prearr[6];
-//                    String supervisor = prearr[7];
-//                    String security = prearr[8];
-//                    String customer = prearr[9];
-//
-//                    String total = prearr[10];
-//                    String chequeNo = prearr[11];
-//                    String bankName = prearr[12];
-//                    String chequeDate = prearr[13];
-//                    String payment = prearr[14];
-//                    String outstanding = prearr[15];
-//                    String payType = prearr[16];
                     JSONObject itemDetails = (JSONObject) jSONObject.get("items");
                     Collection<Invoice> invoiceItemList = new ArrayList<>();
                     InvoiceInfo invoiceinfo = new InvoiceInfo();
