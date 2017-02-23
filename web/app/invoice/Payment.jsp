@@ -105,6 +105,7 @@
         var chdate = document.getElementById('chdate').value;
         var chno = document.getElementById('chno').value;
         var payment = document.getElementById('payment').value;
+        var crn = document.getElementById('crn').value;
 
 
         BootstrapDialog.show({
@@ -128,7 +129,7 @@
                                 }
                             }
                         };
-                        xmlHttp.open("POST", "Invoice?action=SavePayment&ino=" + ino + "&payType=" + payType + "&bank=" + bank + "&chdate=" + chdate + "&chno=" + chno + "&payment=" + payment, true);
+                        xmlHttp.open("POST", "Invoice?action=SavePayment&ino=" + ino + "&payType=" + payType + "&bank=" + bank + "&chdate=" + chdate + "&chno=" + chno + "&payment=" + payment + "&crn=" + crn, true);
                         xmlHttp.send();
                     }
                 }, {
@@ -164,6 +165,14 @@
                 </div>
                 <div class="x_content">
                     <!--<form class="form-horizontal" validate>-->
+                    <div class="item form-group" style="padding-top: 20px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">CRN #:<span class="required"></span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="crn" name="crn"  class="form-control col-md-7 col-xs-12">
+                        </div>
+                    </div>  <div class="clearfix"></div>
+                    
                     <div class="item form-group" style="padding-top: 20px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Invoice 
                         </label>
@@ -208,6 +217,7 @@
                             <select class="form-control" name="payType" id="payType" onchange="payTypeCheck()" required="required" >
                                 <option value="1">Cash</option>
                                 <option value="0">Cheque</option>
+                                <option value="2">Other</option>
                             </select>                              
                         </div>
                     </div>   

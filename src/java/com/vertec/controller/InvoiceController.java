@@ -298,9 +298,11 @@ public class InvoiceController extends HttpServlet {
                     String chdate = request.getParameter("chdate").trim();
                     String chno = request.getParameter("chno").trim();
                     String payment = request.getParameter("payment").trim();
+                    String crn = request.getParameter("crn").trim();
 
                     String result2 = VertecConstants.SUCCESS;
                     Payment p = new Payment();
+                    p.setCrn(crn);
                     p.setAddedBy(user1);
                     p.setAmount(Double.parseDouble(payment));
                     p.setDate(new Date());
