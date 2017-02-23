@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date")})
 public class Payment implements Serializable {
 
+    @Column(name = "prn")
+    private String prn;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -192,6 +195,14 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         return "com.vertec.hibe.model.Payment[ id=" + id + " ]";
+    }
+
+    public String getPrn() {
+        return prn;
+    }
+
+    public void setPrn(String prn) {
+        this.prn = prn;
     }
     
 }
