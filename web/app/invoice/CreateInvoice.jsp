@@ -172,7 +172,7 @@
                                 <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Supervisor</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" name="supervisor" id="supervisor" >
-                                        <option value="" disabled selected="true">Select Supervisor</option>
+                                        <option value="" selected="true">Select Supervisor</option>
                                         <%
                                             for (Supervisor c : supervisor) {
                                         %>
@@ -187,7 +187,7 @@
                                 <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Security Officer</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control" name="securityOfficer" id="securityOfficer" >
-                                        <option value="" disabled selected="true">Select Security Officer</option>
+                                        <option value="" selected="true">Select Security Officer</option>
                                         <%
                                             for (SecurityOfficer c : securityofficer) {
                                         %>
