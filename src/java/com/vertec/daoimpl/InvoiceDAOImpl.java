@@ -419,7 +419,7 @@ public class InvoiceDAOImpl {
                 }
             }
         }
-        return null;
+        return "";
     }
    public List<Payment> getListOfPayments(int id) {
 

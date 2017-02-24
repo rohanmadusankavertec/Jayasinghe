@@ -421,7 +421,6 @@ public class InvoiceController extends HttpServlet {
                     if(!id.equals("")){
                         cid=Integer.parseInt(id);
                     }
-                    
                     List<Payment> payments = invoicedao.getListOfPayments(cid);
                     request.setAttribute("payments", payments);
                     requestDispatcher = request.getRequestDispatcher("app/invoice/ViewPayments.jsp");

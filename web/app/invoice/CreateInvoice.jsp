@@ -44,14 +44,14 @@
         var type = document.getElementById('full');
         if(type.checked){
             document.getElementById('lqty').className='hidden';
-            document.getElementById('width').className='item form-group';
-            document.getElementById('height').className='item form-group';
-            document.getElementById('depth').className='item form-group';
+            document.getElementById('width2').className='item form-group';
+            document.getElementById('height2').className='item form-group';
+            document.getElementById('depth2').className='item form-group';
         }else{
             document.getElementById('lqty').className='item form-group';
-            document.getElementById('width').className='hidden';
-            document.getElementById('height').className='hidden';
-            document.getElementById('depth').className='hidden';
+            document.getElementById('width2').className='hidden';
+            document.getElementById('height2').className='hidden';
+            document.getElementById('depth2').className='hidden';
         }
         
         
@@ -103,7 +103,7 @@
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Number</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" onkeyup="getVehicle()" data-validate-words="1" id="vehicleNo" name="vehicleNo" placeholder="Enter Vehicle Number" required="required" type="text">
+                                <input class="form-control col-md-7 col-xs-12" onkeyup="getVehicle()" onblur="getVehicle()" data-validate-words="1" id="vehicleNo" name="vehicleNo" placeholder="Enter Vehicle Number" required="required" type="text">
                             </div>
                         </div>
                         <div class="item form-group">
@@ -120,21 +120,21 @@
                                     <input class="form-control col-md-7 col-xs-12" id="qty" name="qty" placeholder="Enter Loading Quantity"  type="number">
                                 </div>
                             </div>-->
-                            <div id="width" class="item form-group">
+                            <div id="width2" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text">
                                 </div>
                             </div>
 <div class="clearfix"></div>
-                            <div id="height" class="item form-group">
+                            <div id="height2" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text">
                                 </div>
                             </div>
 <div class="clearfix"></div>
-                            <div id="depth" class="item form-group">
+                            <div id="depth2" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text">
