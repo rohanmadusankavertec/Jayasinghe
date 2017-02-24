@@ -420,4 +420,32 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
+   public List<Payment> getListOfPayments(int id) {
+
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+
+        if (session != null) {
+            try {
+                
+                
+                
+                
+                Query query = session.createQuery("SELECT p FROM Payment p WHERE p.invoiceInfoId.customerId.id=:id");
+                query.setParameter("id", id);
+                List<Payment> inList = query.list();
+                
+                return inList;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return null;
+
+    }
 }

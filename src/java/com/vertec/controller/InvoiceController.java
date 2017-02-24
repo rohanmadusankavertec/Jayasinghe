@@ -397,11 +397,27 @@ public class InvoiceController extends HttpServlet {
                     out.write(result);
                     break;
                 }
+                //Redirrect to invoice payment search page
+                case "SearchPayment": {
+                    List<Customer> customer = registrationdao.getListOfCustomer();
+                    request.setAttribute("customer", customer);
+                    requestDispatcher = request.getRequestDispatcher("app/invoice/SearchPayments.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+                }
+                case "ToViewPayment": {
+                    String id = request.getParameter("customer");
+                    System.out.println("Printing.."+id);
+                    List<Payment> payments = invoicedao.getListOfPayments(Integer.parseInt(id));
+                    request.setAttribute("payments", payments);
+                    requestDispatcher = request.getRequestDispatcher("app/invoice/ViewPayments.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+                }
             }
-
         }
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

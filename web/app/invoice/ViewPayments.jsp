@@ -6,6 +6,7 @@
  *
 --%>
 
+<%@page import="com.vertec.hibe.model.Payment"%>
 <%@page import="com.vertec.hibe.model.InvoiceInfo"%>
 <%@page import="com.vertec.hibe.model.Category"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,85 +14,19 @@
 <%@include file="../../template/header.jsp"%>
 <%@include file="../../template/sidebar.jsp"%>
 
-<script type="text/javascript">
-    function sm_alert(text) {
-        BootstrapDialog.alert({
-            title: 'Alert',
-            type: BootstrapDialog.TYPE_DANGER,
-            message: text,
-            size: BootstrapDialog.SIZE_SMALL
-        });
-    }
-
-    function sm_warning(text) {
-        BootstrapDialog.show({
-            title: 'Warning',
-            type: BootstrapDialog.TYPE_WARNING,
-            message: text,
-            size: BootstrapDialog.SIZE_SMALL
-        });
-    }
-
-    function nom_Success(text) {
-        BootstrapDialog.show({
-            title: 'Notification',
-            type: BootstrapDialog.TYPE_SUCCESS,
-            message: text,
-            size: BootstrapDialog.SIZE_NORMAL
-        });
-    }
-    //Delete invoice
-    function DeleteInvoice(id) {
-        BootstrapDialog.show({
-            message: 'Do you want to Delete This Invoice ?',
-            closable: false,
-            buttons: [{
-                    label: 'Yes',
-                    action: function (dialogRef) {
-                        dialogRef.close();
-                        var xmlHttp = getAjaxObject();
-                        xmlHttp.onreadystatechange = function ()
-                        {
-                            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-                            {
-                                var reply = xmlHttp.responseText;
-                                if (reply === "Success") {
-                                    nom_Success("Successfully Deleted");
-                                    setTimeout("location.href = 'Invoice?action=ViewInvoice';", 1500);
-                                } else {
-                                    sm_warning("Invoice Not Correctly Deleted. Please Try Again");
-                                }
-                            }
-                        };
-                        xmlHttp.open("POST", "Invoice?action=DeleteInvoice&id=" + id, true);
-                        xmlHttp.send();
-                    }
-                }, {
-                    label: 'No',
-                    action: function (dialogRef) {
-                        dialogRef.close();
-                    }
-                }]
-        });
-    }
-    function OpenInvoice(id){
-        window.open("app/invoice/InvoicePrint.jsp?id="+id,'_blank');
-    }
-    
-</script>
 
 
 <div class="">
     <div class="clearfix"></div>
     <%
-        List<InvoiceInfo> invoiceList = (List<InvoiceInfo>) request.getAttribute("InvoiceInfo");
+        List<Payment> payments = (List<Payment>) request.getAttribute("payments");
     %>
     <div class="row">
 
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Issued Invoice <small>up to now</small></h2>
+                    <h2>Payments History<small>up to now</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -106,19 +41,17 @@
                             <thead>
                                 <tr class="headings">
                                     <th>#</th>
+                                    <th>Invoice No</th>
+                                    <th>Invoice Total</th>
+                                    <th>Payment</th>
                                     <th>Date</th>
-                                    <th>Vehicle No</th>
-                                    <th>Total</th>
-                                    <th>Arrive Time</th>
-                                    <th>Load Time</th>
-                                    <th>Outstanding</th>
-                                    <th class=" no-link last"><span class="nobr">Action</span>
-                                    </th>
+                                    <th>Payment Type</th>
+                                    <th>Received By</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <%                                    
-                                    for (InvoiceInfo c : invoiceList) {
+                                    for (Payment c : payments) {
                                 %>
                                 
                                 <%
@@ -129,18 +62,14 @@
                                 <tr>
                                 <%}%>
                                 
-                                    <td class=" "><%=c.getId()%></td>
-                                    <td class=" "><%=c.getDate()%></td>
-                                    <td class=" "><%=c.getVehicleNo()%></td>
-                                    <td class=" ">Rs: <%=c.getTotal()%></td>
-                                    <td class=" "><%=c.getIntime()%></td>
-                                    <td class=" "><%=c.getLoadtime()%></td>
-                                    <td class=" ">Rs: <%=c.getOutstanding()%></td>
-                                    <td class="last"> 
-                                        
-                                        <span class="btn btn-default glyphicon glyphicon-search text-center" onclick="OpenInvoice(<%=c.getId()%>)"></span>
-                                        <span class="btn btn-default glyphicon glyphicon-remove text-center" onclick="DeleteInvoice(<%=c.getId()%>)"></span>
-                                    </td>
+                                    <td><%=c.getId()%></td>
+                                    <td><%=c.getInvoiceInfoId().getId() %></td>
+                                    <td><%=c.getInvoiceInfoId().getTotal() %></td>
+                                    <td><%=c.getAmount()%></td>
+                                    <td><%=c.getDate() %></td>
+                                    <td><%=c.getPaymentTypeId().getName() %></td>
+                                    <td><%=c.getAddedBy().getFirstName()+" "+c.getAddedBy().getLastName() %></td>
+                                    
                                 </tr>
                                 <%}%>
                             </tbody>
