@@ -98,8 +98,8 @@ public class InvoiceController extends HttpServlet {
                     String Reached = request.getParameter("Reached").trim();
                     String Loaded = request.getParameter("Loaded").trim();
                     String Name = request.getParameter("Name").trim();
-                    String supervisor = request.getParameter("supervisor").trim();
-                    String securityOfficer = request.getParameter("securityOfficer").trim();
+                    String supervisor = request.getParameter("supervisor");
+                    String securityOfficer = request.getParameter("securityOfficer");
                     List<Category> category = registrationdao.getListOfCategory();
                     request.setAttribute("category", category);
                     Customer cus = null;
