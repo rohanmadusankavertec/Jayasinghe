@@ -87,7 +87,8 @@ public class InvoiceController extends HttpServlet {
                 case "ToInvoice": {
                     String qty = request.getParameter("qty").trim();
                     String loadType = request.getParameter("load").trim();
-//                    System.out.println("......"+loadType);
+                    System.out.println("......"+loadType);
+                    System.out.println("......"+qty);
                     String customer = request.getParameter("customer");
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
@@ -105,6 +106,7 @@ public class InvoiceController extends HttpServlet {
                         cus = registrationdao.viewCustomer(Integer.parseInt(customer));
                     }
                     request.setAttribute("qty", qty);
+                    request.setAttribute("loadType", loadType);
                     request.setAttribute("customer", cus);
                     request.setAttribute("vehicleNo", vehicleNo);
                     request.setAttribute("width", v_width);
