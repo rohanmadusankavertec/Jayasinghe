@@ -20,10 +20,9 @@
 <%
     List<Category> category = (List<Category>) request.getAttribute("category");
     Customer customer = (Customer) request.getAttribute("customer");
+    System.out.println("/////////////"+customer.getName());
     String vehicleNo = (String) request.getAttribute("vehicleNo");
-    String width = (String) request.getAttribute("width");
-    String vlong = (String) request.getAttribute("long");
-    String height = (String) request.getAttribute("height");
+    
     String reached = (String) request.getAttribute("reached");
     String loaded = (String) request.getAttribute("loaded");
     String name = (String) request.getAttribute("name");
@@ -31,6 +30,26 @@
     String securityofficer = (String) request.getAttribute("securityofficer");
     String qty = (String) request.getAttribute("qty");
     String loadType = (String) request.getAttribute("loadType");
+    
+    String width= "0";
+    String vlong= "0";
+    String height= "0";
+    if(loadType.equals("full")){
+       width = (String) request.getAttribute("width");
+       vlong = (String) request.getAttribute("long");
+       height = (String) request.getAttribute("height"); 
+       System.out.println(width+" "+vlong+" "+height);
+    }else{
+        System.out.println("loading type is custom....");
+        System.out.println("loading type is custom...."+qty);
+    }
+            
+    
+//    System.out.println("...............................");
+//    System.out.println(qty);
+//    System.out.println("...............................");
+//    System.out.println(loadType);
+//    System.out.println("...............................");
 
 %>
 <script type="text/javascript">
@@ -97,13 +116,22 @@
     }
     var item_details = {};
     function addtogrid() {
+        alert("check");
         var cat2 = document.getElementById("category").value;
-        var qty = document.getElementById("qty").value;
+//        var qty = document.getElementById("lqty").value;
+        var qty = <%=qty%>;
+        var type = "<%=loadType%>";
+        <% if(loadType.equals("full")){%>
+        var cube = <%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %>;
+        <%}%>
+//        alert(cube);
+        alert(qty);
+        alert(type);
         var transport = document.getElementById("transport").value;
+        
         if (cat2 === "") {
             sm_warning("Please select a stone category");
-        } else if (qty === "") {
-            sm_warning("Please enter the quantity");
+        
         } else if (transport === "") {
             sm_warning("Please enter the transport amount");
         } else {
@@ -112,13 +140,24 @@
             var catId = catarr[0];
             var catName = catarr[1];
             var catPrice = catarr[2];
-            var total = (parseFloat(qty) * parseFloat(catPrice)) + parseFloat(transport);
-            var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
-            var totqty = cqty + parseFloat(qty);
-            document.getElementById("invoicespace").innerHTML = totqty;
+            if(type === "full"){
+                var total = (parseFloat(cube) * parseFloat(catPrice)) + parseFloat(transport);
+            }else{
+                var total = (parseFloat(qty) * parseFloat(catPrice)) + parseFloat(transport);
+            }
+            
+//            var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
+//            var totqty = cqty + parseFloat(qty);
+//            document.getElementById("invoicespace").innerHTML = totqty;
             items["category"] = catarr[1];
             items["price"] = catarr[2];
-            items["qty"] = qty;
+            
+            if(type === "full"){
+                items["qty"] = cube;
+            }else{
+                items["qty"] = qty;
+            }
+            
             items["transport"] = transport;
             item_details[catId] = items;
             var invoiceItemTable = document.getElementById('invoiceItemTable').getElementsByTagName('tbody')[0];
@@ -439,11 +478,14 @@
                             <h1>
                                 <i class="fa fa-globe"></i> Invoice.
                                 <input type="hidden" value="<%=vehicleNo%>" id="vno"/>
-                                <input type="hidden" value="<%=qty%>" id="qty"/>
+                                <input type="hidden" value="<%=qty%>" id="lqty"/>
                                 <input type="hidden" value="<%=loadType%>" id="ltype"/>
-                                <input type="hidden" value="<%=width%>" id="width"/>
-                                <input type="hidden" value="<%=vlong%>" id="vlong"/>
-                                <input type="hidden" value="<%=height%>" id="height"/>
+                                <%if(loadType.equals("full")){%>
+                                
+                                    <input type="hidden" value="<%=width%>" id="width"/>
+                                    <input type="hidden" value="<%=vlong%>" id="vlong"/>
+                                    <input type="hidden" value="<%=height%>" id="height"/>
+                                <%}%>
                                 <input type="hidden" value="<%=reached%>" id="reached"/>
                                 <input type="hidden" value="<%=loaded%>" id="loaded"/>
                                 <input type="hidden" value="<%=name%>" id="name"/>
@@ -568,7 +610,7 @@
                                             <%if(loadType.equals("full")){%>
                                                 <%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %> Cubic Feet</td>
                                             <%}else{%>    
-                                                <%=qty %>
+                                                <%=qty%>
                                             <%}%>
                                     
                                     </tr>

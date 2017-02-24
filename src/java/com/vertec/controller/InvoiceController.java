@@ -90,6 +90,7 @@ public class InvoiceController extends HttpServlet {
                     System.out.println("......"+loadType);
                     System.out.println("......"+qty);
                     String customer = request.getParameter("customer");
+                    System.out.println("<<<<<<<<"+customer);
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
                     String v_long = request.getParameter("long").trim();
@@ -117,6 +118,7 @@ public class InvoiceController extends HttpServlet {
                     request.setAttribute("name", Name);
                     request.setAttribute("supervisor", supervisor);
                     request.setAttribute("securityofficer", securityOfficer);
+                    
 
                     requestDispatcher = request.getRequestDispatcher("app/invoice/Invoice.jsp");
                     requestDispatcher.forward(request, response);
