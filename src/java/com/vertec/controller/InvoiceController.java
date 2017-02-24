@@ -323,6 +323,13 @@ public class InvoiceController extends HttpServlet {
                         p.setChequeDate(null);
                         p.setChequeNo(null);
                         result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
+                    }else if (payType.equals("2")) {
+                        p.setIsValid(true);
+                        p.setPaymentTypeId(new PaymentType(3));
+                        p.setBank(null);
+                        p.setChequeDate(null);
+                        p.setChequeNo(null);
+                        result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
                     } else {
                         p.setIsValid(false);
                         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -410,7 +417,12 @@ public class InvoiceController extends HttpServlet {
                 case "ToViewPayment": {
                     String id = request.getParameter("customer");
                     System.out.println("Printing.."+id);
-                    List<Payment> payments = invoicedao.getListOfPayments(Integer.parseInt(id));
+                    int cid=0;
+                    if(!id.equals("")){
+                        cid=Integer.parseInt(id);
+                    }
+                    
+                    List<Payment> payments = invoicedao.getListOfPayments(cid);
                     request.setAttribute("payments", payments);
                     requestDispatcher = request.getRequestDispatcher("app/invoice/ViewPayments.jsp");
                     requestDispatcher.forward(request, response);

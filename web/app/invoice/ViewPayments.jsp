@@ -42,6 +42,7 @@
                                 <tr class="headings">
                                     <th>#</th>
                                     <th>Invoice No</th>
+                                    <th>CRN No</th>
                                     <th>Invoice Total</th>
                                     <th>Payment</th>
                                     <th>Date</th>
@@ -50,26 +51,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%                                    
+                                <%
                                     for (Payment c : payments) {
                                 %>
-                                
-                                <%
-                                if(c.getOutstanding()>0){
-                                %>
-                                <tr style="background-color: #f1d6d6;">
-                                <%}else{%>
                                 <tr>
-                                <%}%>
-                                
                                     <td><%=c.getId()%></td>
-                                    <td><%=c.getInvoiceInfoId().getId() %></td>
-                                    <td><%=c.getInvoiceInfoId().getTotal() %></td>
+                                    <td><%=c.getInvoiceInfoId().getId()%></td>
+                                    <td><%=c.getCrn()%></td>
+                                    <td><%=c.getInvoiceInfoId().getTotal()%></td>
                                     <td><%=c.getAmount()%></td>
-                                    <td><%=c.getDate() %></td>
-                                    <td><%=c.getPaymentTypeId().getName() %></td>
-                                    <td><%=c.getAddedBy().getFirstName()+" "+c.getAddedBy().getLastName() %></td>
-                                    
+                                    <td><%=c.getDate()%></td>
+                                    <td><%=c.getPaymentTypeId().getName()%></td>
+                                    <td><%=c.getAddedBy().getFirstName() + " " + c.getAddedBy().getLastName()%></td>
                                 </tr>
                                 <%}%>
                             </tbody>
@@ -92,14 +85,14 @@
             .on('keypress', 'input[required][pattern]', validator.keypress);
 
     $('.multi.required')
-            .on('keyup blur', 'input', function() {
+            .on('keyup blur', 'input', function () {
                 validator.checkField.apply($(this).siblings().last()[0]);
             });
 
     // bind the validation to the form submit event
     //$('#send').click('submit');//.prop('disabled', true);
 
-    $('form').submit(function(e) {
+    $('form').submit(function (e) {
         e.preventDefault();
         var submit = true;
         // evaluate the form using generic validaing
@@ -113,18 +106,18 @@
     });
 
     /* FOR DEMO ONLY */
-    $('#vfields').change(function() {
+    $('#vfields').change(function () {
         $('form').toggleClass('mode2');
     }).prop('checked', false);
 
-    $('#alerts').change(function() {
+    $('#alerts').change(function () {
         validator.defaults.alerts = (this.checked) ? false : true;
         if (this.checked)
             $('form .alert').remove();
     }).prop('checked', false);
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('input.tableflat').iCheck({
             checkboxClass: 'icheckbox_flat-green',
             radioClass: 'iradio_flat-green'
@@ -132,7 +125,7 @@
     });
 
     var asInitVals = new Array();
-    $(document).ready(function() {
+    $(document).ready(function () {
         var oTable = $('#example').dataTable({
             "oLanguage": {
                 "sSearch": "Search all columns:"
@@ -149,20 +142,20 @@
                 "sSwfPath": "${context}/resources/js/datatables/tools/swf/copy_csv_xls_pdf.swf"
             }
         });
-        $("tfoot input").keyup(function() {
+        $("tfoot input").keyup(function () {
             /* Filter on the column based on the index of this element's parent <th> */
             oTable.fnFilter(this.value, $("tfoot th").index($(this).parent()));
         });
-        $("tfoot input").each(function(i) {
+        $("tfoot input").each(function (i) {
             asInitVals[i] = this.value;
         });
-        $("tfoot input").focus(function() {
+        $("tfoot input").focus(function () {
             if (this.className == "search_init") {
                 this.className = "";
                 this.value = "";
             }
         });
-        $("tfoot input").blur(function(i) {
+        $("tfoot input").blur(function (i) {
             if (this.value == "") {
                 this.className = "search_init";
                 this.value = asInitVals[$("tfoot input").index(this)];

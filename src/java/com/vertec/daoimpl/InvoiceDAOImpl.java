@@ -426,12 +426,16 @@ public class InvoiceDAOImpl {
 
         if (session != null) {
             try {
+                String hql="SELECT p FROM Payment p WHERE p.isValid=:isvalid";
+                if(id!=0){
+                hql+=" AND p.invoiceInfoId.customerId.id=:id";
+                }
                 
-                
-                
-                
-                Query query = session.createQuery("SELECT p FROM Payment p WHERE p.invoiceInfoId.customerId.id=:id");
+                Query query = session.createQuery(hql);
+                if(id!=0){
                 query.setParameter("id", id);
+                }
+                query.setParameter("isvalid", true);
                 List<Payment> inList = query.list();
                 
                 return inList;
