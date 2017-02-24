@@ -395,6 +395,14 @@ public class InvoiceController extends HttpServlet {
                     out.write(result);
                     break;
                 }
+                //Redirrect to invoice payment search page
+                case "SearchPayment": {
+                    List<Customer> customer = registrationdao.getListOfCustomer();
+                    request.setAttribute("customer", customer);
+                    requestDispatcher = request.getRequestDispatcher("app/invoice/InvoicePrint.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+                }
             }
 
         }
