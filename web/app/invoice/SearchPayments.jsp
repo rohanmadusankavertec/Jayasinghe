@@ -36,7 +36,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form action="Invoice?action=ViewPayments" method="post" class="form-horizontal form-label-left" validate>
+                    <form action="Invoice?action=ToViewPayment" method="post" class="form-horizontal form-label-left" validate>
                         <span class="section">Add Invoice Info</span>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Customer</label>

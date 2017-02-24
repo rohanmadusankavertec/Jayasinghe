@@ -72,6 +72,7 @@
                              <%if (ca.checkUserAuth("CHEQUE", group) != null) {%>
                              <li><a href="${context}/Invoice?action=ViewCheques">Cheques</a></li>
                              <%}%>
+                             <li><a href="${context}/Invoice?action=SearchPayment">View Payments</a></li>
                         </ul>
                     </li>
                    <li><a><i class="fa fa-newspaper-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
