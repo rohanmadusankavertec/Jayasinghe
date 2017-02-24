@@ -59,6 +59,38 @@
         
     }
     
+    
+    function sentData(){
+        var type = document.getElementById('load').value;
+        var height = document.getElementById('height').value;
+        var depth = document.getElementById('long').value;
+        var width = document.getElementById('width').value;
+        var qty = document.getElementById('width').value;
+        
+        if(type === "full"){
+            
+            if(width === ""){
+                sm_warning("Please Enter Vehicle Width....");
+            }else if(depth === ""){
+                sm_warning("Please Enter Vehicle Depth....");
+            }else(height === ""){
+                sm_warning("Please Enter Vehicle Height....");
+            }
+        }else{
+            sm_warning("Please Enter Vehicle Height....");
+        }
+        
+        var customer = document.getElementById('customer').value;
+        var vnumber = document.getElementById('vehicleNo').value;
+        
+        
+        var Atime = document.getElementById('Reached').value;
+        var dtime = document.getElementById('Loaded').value;
+        var name = document.getElementById('Name').value;
+        var sup = document.getElementById('supervisor').value;
+        var secu = document.getElementById('securityOfficer').value;
+    }
+    
 </script>
 
 
@@ -114,8 +146,8 @@
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Qty Level</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="radio"  value="full" name="load" id="full" checked onchange="loadingType()" />Full
-                                <input type="radio" value="custom" name="load" id="custom" onchange="loadingType()"/>Custom
+                                <input type="radio"  value="full" name="load" id="load" checked onchange="loadingType()" />Full
+                                <input type="radio" value="custom" name="load" id="load" onchange="loadingType()"/>Custom
                             </div>
                         </div>        
                         <div class="clearfix">
@@ -158,19 +190,19 @@
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Arrive Time</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="form-control col-md-7 col-xs-12"  name="Reached" placeholder="Enter the Arrive Time" type="time">
+                                    <input class="form-control col-md-7 col-xs-12" id="Reached"  name="Reached" placeholder="Enter the Arrive Time" type="time">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loaded Time</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="form-control col-md-7 col-xs-12" name="Loaded" placeholder="Enter the Loaded Time" type="time">
+                                    <input class="form-control col-md-7 col-xs-12" id="Loaded" name="Loaded" placeholder="Enter the Loaded Time" type="time">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Receiver Name</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="form-control col-md-7 col-xs-12" name="Name" placeholder="Enter the Receiver Name" type="text">
+                                    <input class="form-control col-md-7 col-xs-12" id="Name" name="Name" placeholder="Enter the Receiver Name" type="text">
                                 </div>
                             </div>
                             <div class="item form-group">
