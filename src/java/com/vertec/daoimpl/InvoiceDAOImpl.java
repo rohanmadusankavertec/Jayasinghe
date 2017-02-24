@@ -406,8 +406,9 @@ public class InvoiceDAOImpl {
                 Query query = session.createQuery("Select i from InvoiceInfo i where i.vehicleNo=:vno");
                 query.setParameter("vno", id);
                 query.setMaxResults(1);
+                
                 InvoiceInfo invoice = (InvoiceInfo) query.uniqueResult();
-                if(invoice==null){
+                if(invoice!=null){
                 return invoice.getVWidth()+"~"+invoice.getVHeight()+"~"+invoice.getVLong();
                 }
             } catch (Exception e) {

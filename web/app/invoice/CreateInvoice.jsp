@@ -23,7 +23,6 @@
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
             {
                 var reply = xmlHttp.responseText;
-
                 if (reply.length > 2) {
                     var arr = reply.split("~");
                     document.getElementById("width").value = arr[0];
@@ -43,7 +42,6 @@
     
     function loadingType(){
         var type = document.getElementById('full');
-        
         if(type.checked){
             document.getElementById('lqty').className='hidden';
             document.getElementById('width').className='item form-group';
@@ -60,9 +58,6 @@
     }
     
 </script>
-
-
-
 
 <%
     List<Customer> customer = (List<Customer>) request.getAttribute("customer");
