@@ -404,8 +404,10 @@ public class InvoiceController extends HttpServlet {
                     break;
                 }
                 case "ToViewPayment": {
-                    String id = request.getParameter("customer").trim();
-                    
+                    String id = request.getParameter("customer");
+                    System.out.println("Printing.."+id);
+                    List<Payment> payments = invoicedao.getListOfPayments(Integer.parseInt(id));
+                    request.setAttribute("payments", payments);
                     requestDispatcher = request.getRequestDispatcher("app/invoice/ViewPayments.jsp");
                     requestDispatcher.forward(request, response);
                     break;
