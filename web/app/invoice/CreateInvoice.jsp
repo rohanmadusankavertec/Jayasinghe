@@ -40,6 +40,25 @@
         xmlHttp.open("POST", "Invoice?action=getVehicle&id=" + id, true);
         xmlHttp.send();
     }
+    
+    function loadingType(){
+        var type = document.getElementById('full');
+        
+        if(type.checked){
+            document.getElementById('lqty').className='hidden';
+            document.getElementById('width').className='item form-group';
+            document.getElementById('height').className='item form-group';
+            document.getElementById('depth').className='item form-group';
+        }else{
+            document.getElementById('lqty').className='item form-group';
+            document.getElementById('width').className='hidden';
+            document.getElementById('height').className='hidden';
+            document.getElementById('depth').className='hidden';
+        }
+        
+        
+    }
+    
 </script>
 
 
@@ -95,35 +114,47 @@
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Qty Level</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="checkbox" name="qtylvl"/> Full<br>
-                                <input type="checkbox" name="qtylvl"/> Custom
+                                <input type="radio"  value="full" name="load" id="full" checked onchange="loadingType()" />Full
+                                <input type="radio" value="custom" name="load" id="custom" onchange="loadingType()"/>Custom
                             </div>
                         </div>        
                         <div class="clearfix">
-                            <div class="item form-group">
+<!--                            <div id="lqty" class="hidden">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loading QTY</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input class="form-control col-md-7 col-xs-12" id="qty" name="qty" placeholder="Enter Loading Quantity"  type="number">
+                                </div>
+                            </div>-->
+                            <div id="width" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text">
                                 </div>
                             </div>
-                            <div class="item form-group">
+<div class="clearfix"></div>
+                            <div id="height" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text">
                                 </div>
                             </div>
-                            <div class="item form-group">
+<div class="clearfix"></div>
+                            <div id="depth" class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text">
                                 </div>
                             </div>
-                            <div class="item form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Qty (Cubic Feet) </label>
+                            <div class="clearfix"></div>
+                            <div id="lqty" class="hidden">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loading QTY (Cubic Feet) </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input class="form-control col-md-7 col-xs-12" id="qty" name="long" placeholder="Enter Vehicle Long" type="text">
+                                    <input class="form-control col-md-7 col-xs-12" id="qty" name="qty" placeholder="Enter Loading Quantity" type="text">
                                 </div>
                             </div>
+                            
+<div class="clearfix"></div>
+
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Arrive Time</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">

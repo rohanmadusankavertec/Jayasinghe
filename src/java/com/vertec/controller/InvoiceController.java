@@ -85,6 +85,9 @@ public class InvoiceController extends HttpServlet {
                 }
                 //Open Invoice Page
                 case "ToInvoice": {
+                    String qty = request.getParameter("qty").trim();
+                    String loadType = request.getParameter("load").trim();
+//                    System.out.println("......"+loadType);
                     String customer = request.getParameter("customer");
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
@@ -101,6 +104,7 @@ public class InvoiceController extends HttpServlet {
                     if (customer != null) {
                         cus = registrationdao.viewCustomer(Integer.parseInt(customer));
                     }
+                    request.setAttribute("qty", qty);
                     request.setAttribute("customer", cus);
                     request.setAttribute("vehicleNo", vehicleNo);
                     request.setAttribute("width", v_width);
@@ -121,6 +125,7 @@ public class InvoiceController extends HttpServlet {
                 case "SubmitInvoice": {
                     System.out.println("Submit Invoice Method..");
                     String data = request.getParameter("data");
+                    
                     System.out.println(data);
                     JSONParser parser = new JSONParser();
 

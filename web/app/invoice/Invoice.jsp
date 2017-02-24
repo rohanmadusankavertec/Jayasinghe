@@ -29,6 +29,8 @@
     String name = (String) request.getAttribute("name");
     String supervisor = (String) request.getAttribute("supervisor");
     String securityofficer = (String) request.getAttribute("securityofficer");
+    String qty = (String) request.getAttribute("qty");
+    String loadType = (String) request.getAttribute("loadType");
 
 %>
 <script type="text/javascript">
@@ -437,6 +439,8 @@
                             <h1>
                                 <i class="fa fa-globe"></i> Invoice.
                                 <input type="hidden" value="<%=vehicleNo%>" id="vno"/>
+                                <input type="hidden" value="<%=qty%>" id="qty"/>
+                                <input type="hidden" value="<%=loadType%>" id="ltype"/>
                                 <input type="hidden" value="<%=width%>" id="width"/>
                                 <input type="hidden" value="<%=vlong%>" id="vlong"/>
                                 <input type="hidden" value="<%=height%>" id="height"/>
@@ -560,7 +564,13 @@
                                     </tr>
                                     <tr>
                                         <th style="width:50%">Available Space (cubic feet)</th>
-                                        <td id="availablespace"><%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %> Cubic Feet</td>
+                                        <td id="availablespace">
+                                            <%if(loadType.equals("full")){%>
+                                                <%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %> Cubic Feet</td>
+                                            <%}else{%>    
+                                                <%=qty %>
+                                            <%}%>
+                                    
                                     </tr>
                                     <tr>
                                         <th style="width:50%">Invoice Space</th>
