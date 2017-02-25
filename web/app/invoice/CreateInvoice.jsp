@@ -73,7 +73,7 @@
     
     function sentData(){
         
-        var type1 = document.getElementById('load').value;
+        var type1 = document.getElementById('load');
         var height = document.getElementById('height').value;
         var depth = document.getElementById('long').value;
         var width = document.getElementById('width').value;
