@@ -18,9 +18,9 @@
 <%@include file="../../template/sidebar.jsp"%>
 
 <%
+    System.out.println("Invoice Page");
     List<Category> category = (List<Category>) request.getAttribute("category");
     Customer customer = (Customer) request.getAttribute("customer");
-    System.out.println("/////////////"+customer.getName());
     String vehicleNo = (String) request.getAttribute("vehicleNo");
     
     String reached = (String) request.getAttribute("reached");

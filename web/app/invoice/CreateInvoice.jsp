@@ -80,7 +80,6 @@
 
     function sentData() {
 
-        alert(document.getElementById('Reached').value);
         var type1 = document.getElementById('load');
         var height = document.getElementById('height').value;
         var depth = document.getElementById('long').value;

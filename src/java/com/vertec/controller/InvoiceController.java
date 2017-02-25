@@ -87,10 +87,10 @@ public class InvoiceController extends HttpServlet {
                 case "ToInvoice": {
                     String qty = request.getParameter("qty").trim();
                     String loadType = request.getParameter("load").trim();
-                    System.out.println("......"+loadType);
-                    System.out.println("......"+qty);
+                    System.out.println("......" + loadType);
+                    System.out.println("......" + qty);
                     String customer = request.getParameter("customer");
-                    System.out.println("<<<<<<<<"+customer);
+                    System.out.println("<<<<<<<<" + customer);
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
                     String v_long = request.getParameter("long").trim();
@@ -104,7 +104,9 @@ public class InvoiceController extends HttpServlet {
                     request.setAttribute("category", category);
                     Customer cus = null;
                     if (customer != null) {
-                        cus = registrationdao.viewCustomer(Integer.parseInt(customer));
+                        if (!customer.equals("")) {
+                            cus = registrationdao.viewCustomer(Integer.parseInt(customer));
+                        }
                     }
                     request.setAttribute("qty", qty);
                     request.setAttribute("loadType", loadType);
@@ -118,8 +120,6 @@ public class InvoiceController extends HttpServlet {
                     request.setAttribute("name", Name);
                     request.setAttribute("supervisor", supervisor);
                     request.setAttribute("securityofficer", securityOfficer);
-                    
-
                     requestDispatcher = request.getRequestDispatcher("app/invoice/Invoice.jsp");
                     requestDispatcher.forward(request, response);
                     break;
@@ -129,7 +129,7 @@ public class InvoiceController extends HttpServlet {
                 case "SubmitInvoice": {
                     System.out.println("Submit Invoice Method..");
                     String data = request.getParameter("data");
-                    
+
                     System.out.println(data);
                     JSONParser parser = new JSONParser();
 
@@ -323,7 +323,7 @@ public class InvoiceController extends HttpServlet {
                         p.setChequeDate(null);
                         p.setChequeNo(null);
                         result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
-                    }else if (payType.equals("2")) {
+                    } else if (payType.equals("2")) {
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(3));
                         p.setBank(null);
@@ -416,10 +416,10 @@ public class InvoiceController extends HttpServlet {
                 }
                 case "ToViewPayment": {
                     String id = request.getParameter("customer");
-                    System.out.println("Printing.."+id);
-                    int cid=0;
-                    if(!id.equals("")){
-                        cid=Integer.parseInt(id);
+                    System.out.println("Printing.." + id);
+                    int cid = 0;
+                    if (!id.equals("")) {
+                        cid = Integer.parseInt(id);
                     }
                     List<Payment> payments = invoicedao.getListOfPayments(cid);
                     request.setAttribute("payments", payments);
@@ -430,7 +430,7 @@ public class InvoiceController extends HttpServlet {
             }
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
