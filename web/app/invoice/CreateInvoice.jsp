@@ -79,10 +79,10 @@
         var width = document.getElementById('width').value;
         var qty = document.getElementById('qty').value;
         
-         
+         var type = "";
          var bool = true;
          if(type1.checked){
-             alert("full");
+             type = document.getElementById('load').value;
              if(width === ""){
                 bool = false;
                 sm_warning("Please Enter Vehicle Width....");
@@ -95,7 +95,7 @@
             }
              
          }else{
-             alert("custom");
+             type = document.getElementById('load1').value;
              if(qty === ""){
                 bool = false;
                 sm_warning("Please Enter Quantity....");
@@ -103,7 +103,7 @@
              
          }
          
-          
+        alert(type);  
         if(bool){
         var customer = document.getElementById('customer').value;
         var vnumber = document.getElementById('vehicleNo').value;
