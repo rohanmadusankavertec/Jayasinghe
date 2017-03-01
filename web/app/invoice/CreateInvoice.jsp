@@ -85,19 +85,23 @@
         var height = document.getElementById('height').value;
         var depth = document.getElementById('long').value;
         var width = document.getElementById('width').value;
-        var qty = document.getElementById('qty').value;
+        var vnumber = document.getElementById('vehicleNo').value;
+        
 
         var type = "";
         var bool = true;
         if (type1.checked) {
             type = document.getElementById('load').value;
-            if (width === "") {
+            if (vnumber === "") {
+                bool = false;
+                sm_warning("Please Enter Vehicle Number....");
+            } else if (width === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Width....");
             } else if (depth === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Depth....");
-            } else if (height === "") {
+            }else if (height === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Height....");
             }
@@ -110,9 +114,10 @@
 //            }
 
         }
-        alert(type);
+        
         if (bool) {
             var customer = document.getElementById('customer').value;
+//            alert(customer);
             var vnumber = document.getElementById('vehicleNo').value;
 
 
@@ -122,7 +127,7 @@
             var sup = document.getElementById('supervisor').value;
             var secu = document.getElementById('securityOfficer').value;
 
-            window.location = "Invoice?action=ToInvoice&load=" + type + "&height=" + height + "&long=" + depth + "&width=" + width + "&Reached=" + Atime + "&Loaded=" + dtime + "&Name=" + name + "&supervisor=" + sup + "&securityOfficer=" + secu + "&customer=" + customer + "&vehicleNo=" + vnumber + "&qty=" + qty;
+            window.location = "Invoice?action=ToInvoice&load=" + type + "&height=" + height + "&long=" + depth + "&width=" + width + "&Reached=" + Atime + "&Loaded=" + dtime + "&Name=" + name + "&supervisor=" + sup + "&securityOfficer=" + secu + "&customer=" + customer + "&vehicleNo=" + vnumber;
         }
     }
 

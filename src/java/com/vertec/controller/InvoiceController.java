@@ -85,12 +85,12 @@ public class InvoiceController extends HttpServlet {
                 }
                 //Open Invoice Page
                 case "ToInvoice": {
-                    String qty = request.getParameter("qty").trim();
+//                    String qty = request.getParameter("qty").trim();
                     String loadType = request.getParameter("load").trim();
                     System.out.println("......"+loadType);
-                    System.out.println("......"+qty);
+//                    System.out.println("......"+qty);
                     String customer = request.getParameter("customer");
-                    System.out.println("<<<<<<<<"+customer);
+                    System.out.println("<<<<<<<<123"+customer);
                     String vehicleNo = request.getParameter("vehicleNo").trim();
                     String v_width = request.getParameter("width").trim();
                     String v_long = request.getParameter("long").trim();
@@ -103,10 +103,15 @@ public class InvoiceController extends HttpServlet {
                     List<Category> category = registrationdao.getListOfCategory();
                     request.setAttribute("category", category);
                     Customer cus = null;
-                    if (customer != null) {
+                    if (customer != null ){
+                        if(!customer.equals("")){
+                            
+                        
                         cus = registrationdao.viewCustomer(Integer.parseInt(customer));
+                            System.out.println("..............;;;;;;");
+                        }
                     }
-                    request.setAttribute("qty", qty);
+//                    request.setAttribute("qty", qty);
                     request.setAttribute("loadType", loadType);
                     request.setAttribute("customer", cus);
                     request.setAttribute("vehicleNo", vehicleNo);
@@ -127,7 +132,7 @@ public class InvoiceController extends HttpServlet {
 
                 //Save Invoice 
                 case "SubmitInvoice": {
-                    System.out.println("Submit Invoice Method..");
+//                    System.out.println("Submit Invoice Method..");
                     String data = request.getParameter("data");
                     
                     System.out.println(data);
@@ -175,8 +180,9 @@ public class InvoiceController extends HttpServlet {
                         invoice.setTransport(Double.parseDouble(transport));
                         invoice.setInvoiceInfoId(invoiceinfo);
                         invoiceItemList.add(invoice);
+                       
                     }
-
+                    
                     invoiceinfo.setInvoiceCollection(invoiceItemList);
                     invoiceinfo.setAddedBy(user1);
                     invoiceinfo.setDate(new Date());
@@ -187,7 +193,7 @@ public class InvoiceController extends HttpServlet {
                     invoiceinfo.setSupervisorId(new Supervisor(Integer.parseInt(supervisor)));
                     invoiceinfo.setSecurityOfficerId(new SecurityOfficer(Integer.parseInt(security)));
                     invoiceinfo.setReceiver(name);
-                    System.out.println(customer);
+//                    System.out.println(customer);
                     if (!customer.equals("")) {
                         int Customer = Integer.parseInt(customer);
                         invoiceinfo.setCustomerId(new Customer(Customer));
@@ -242,10 +248,17 @@ public class InvoiceController extends HttpServlet {
                     }
                     String result1 = invoicedao.saveInvoice(invoiceinfo);
                     String result2 = invoicedao.savePayment(pay);
+                    
+                    System.out.println(".....result1.."+result1);
+                    System.out.println(".....result2.."+result2);
+                    
                     if (result1.equals(VertecConstants.SUCCESS) && result2.equals(VertecConstants.SUCCESS)) {
-                        out.write(VertecConstants.SUCCESS);
+//                        out.write(VertecConstants.SUCCESS);
+                            response.getWriter().write(VertecConstants.SUCCESS);
+//                        System.out.println(".....result1.."+VertecConstants.SUCCESS);
                     } else {
                         out.write(VertecConstants.ERROR);
+//                        System.out.println(".....result2..");
                     }
                     break;
                 }

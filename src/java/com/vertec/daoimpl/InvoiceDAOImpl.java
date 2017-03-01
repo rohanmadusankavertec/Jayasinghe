@@ -99,7 +99,7 @@ public class InvoiceDAOImpl {
 
         if (session != null) {
             try {
-                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid");
+                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid ORDER BY i.id DESC");
                 query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
                 
