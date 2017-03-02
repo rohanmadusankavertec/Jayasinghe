@@ -166,7 +166,7 @@
                 }else{
                     var total = ((parseFloat(catPrice)* parseFloat(qty))/100) + parseFloat(transport);
 //                    alert(qty);
-                    document.getElementById("invoicespace").innerHTML = qty;
+//                    document.getElementById("invoicespace").innerHTML = qty;
                 
                     document.getElementById("cate").className = 'hidden';
                     document.getElementById("cubesqty").className = 'hidden';
@@ -481,7 +481,10 @@
                                     success: function (msg) {
                                         if (msg === "Success") {
                                             nom_Success("Successfully  Added");
-                                            setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 800);
+                                            window.open('Invoice?action=PrintLastInvoice','_blank');
+                                            
+                                            setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
+                                            
                                             setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
                                         } else {
                                             sm_warning("Not Submited , Please Try again");

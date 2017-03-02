@@ -37,9 +37,9 @@
 
             }
         </style>
-        
-       
-        
+
+
+
     </head>
     <body onload="window.print();">
 
@@ -85,27 +85,27 @@
                             <tr>
                                 <td>Customer</td>
                                 <td>:</td>
-                                <%if(iin.getCustomerId()!=null){%>
+                                <%if (iin.getCustomerId() != null) {%>
                                 <td><%=iin.getCustomerId().getName()%></td>
-                                <%}else{%>
+                                <%} else {%>
                                 <td></td>
                                 <%}%>
                             </tr>
                             <tr>
                                 <td>Address</td>
                                 <td>:</td>
-                                 <%if(iin.getCustomerId()!=null){%>
+                                <%if (iin.getCustomerId() != null) {%>
                                 <td><%=iin.getCustomerId().getAddress()%></td>
-                                <%}else{%>
+                                <%} else {%>
                                 <td></td>
                                 <%}%>
                             </tr>
                             <tr>
                                 <td>Contact No</td>
                                 <td>:</td>
-                                <%if(iin.getCustomerId()!=null){%>
+                                <%if (iin.getCustomerId() != null) {%>
                                 <td><%=iin.getCustomerId().getContactNo()%></td>
-                                <%}else{%>
+                                <%} else {%>
                                 <td></td>
                                 <%}%>
                             </tr>
@@ -155,7 +155,7 @@
                         <td><%=invoice.getCubes()%></td>
                         <td><%=invoice.getCategoryId().getPrice()%></td>
                         <td><%=invoice.getTransport()%></td>
-                        <td><%=((invoice.getCubes() * invoice.getCategoryId().getPrice())/100) + invoice.getTransport()%></td>
+                        <td><%=((invoice.getCubes() * invoice.getCategoryId().getPrice()) / 100) + invoice.getTransport()%></td>
                     </tr>
                     <%}%>
                 </table>
@@ -171,28 +171,6 @@
             </table>
 
 
-            <!--        <table style="width: 100%; margin-top: 5px;">
-                        <tr style="height: 30px;">
-                            <td>Arrive Time  : <%=iin.getIntime()%></td>
-                            <td>Supervisor : <%=iin.getSupervisorId().getName()%></td>
-                            <td>Sec. Off. :<%=iin.getSecurityOfficerId().getName()%></td>
-                        </tr>
-                        <tr style="height: 30px;">
-                            <td>Loaded Time  : <%=iin.getLoadtime()%></td>
-                            <td>Sign : .........................</td>
-                            <td>Sign : .........................</td>
-                        </tr>
-                        <tr style="height: 30px;">
-                            <td>Driver's sign  : .........................</td>
-                            <td>Receiver  : <%=iin.getReceiver()%></td>
-                            <td>Time : .........................</td>
-                        </tr>
-                        <tr style="height: 30px;">
-                            <td>Other  : .........................</td>
-                            <td>Sign : .........................</td>
-                            <td></td>
-                        </tr>
-                    </table>-->
 
             <table style="width: 100%; margin-top: 5px;">
                 <tr>
@@ -236,7 +214,12 @@
                             <tr style="height: 20px;">
                                 <td>Supervisor</td>
                                 <td>:</td>
-                                <td><%=iin.getSupervisorId().getName()%></td>
+                                <td><%
+                                    
+                                    if(iin.getSupervisorId()!=null){
+                                    out.write(iin.getSupervisorId().getName());
+                                    }
+                                %></td>
                             </tr>
                             <tr style="height: 20px;">
                                 <td>Sign </td>
@@ -266,7 +249,11 @@
                             <tr style="height: 20px;">
                                 <td>Sec. Off.</td>
                                 <td>:</td>
-                                <td><%=iin.getSecurityOfficerId().getName()%></td>
+                                <td><%
+                                    if (iin.getSecurityOfficerId() != null) {
+                                        out.write(iin.getSecurityOfficerId().getName());
+                                    }
+                                    %></td>
                             </tr>
                             <tr style="height: 20px;">
                                 <td>Sign </td>
