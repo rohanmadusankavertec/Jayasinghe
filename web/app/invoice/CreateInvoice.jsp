@@ -56,12 +56,12 @@
         var type = document.getElementById('load');
 
         if (type.checked) {
-            document.getElementById('lqty').className = 'hidden';
+//            document.getElementById('lqty').className = 'hidden';
             document.getElementById('width2').className = 'item form-group';
             document.getElementById('height2').className = 'item form-group';
             document.getElementById('depth2').className = 'item form-group';
         } else {
-            document.getElementById('lqty').className = 'item form-group';
+//            document.getElementById('lqty').className = 'item form-group';
             document.getElementById('width2').className = 'hidden';
             document.getElementById('height2').className = 'hidden';
             document.getElementById('depth2').className = 'hidden';
@@ -80,38 +80,44 @@
 
     function sentData() {
 
+//        alert(document.getElementById('Reached').value);
         var type1 = document.getElementById('load');
         var height = document.getElementById('height').value;
         var depth = document.getElementById('long').value;
         var width = document.getElementById('width').value;
-        var qty = document.getElementById('qty').value;
+        var vnumber = document.getElementById('vehicleNo').value;
+        
 
         var type = "";
         var bool = true;
         if (type1.checked) {
             type = document.getElementById('load').value;
-            if (width === "") {
+            if (vnumber === "") {
+                bool = false;
+                sm_warning("Please Enter Vehicle Number....");
+            } else if (width === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Width....");
             } else if (depth === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Depth....");
-            } else if (height === "") {
+            }else if (height === "") {
                 bool = false;
                 sm_warning("Please Enter Vehicle Height....");
             }
 
         } else {
             type = document.getElementById('load1').value;
-            if (qty === "") {
-                bool = false;
-                sm_warning("Please Enter Quantity....");
-            }
+//            if (qty === "") {
+//                bool = false;
+//                sm_warning("Please Enter Quantity....");
+//            }
 
         }
-
+        
         if (bool) {
             var customer = document.getElementById('customer').value;
+//            alert(customer);
             var vnumber = document.getElementById('vehicleNo').value;
 
 
@@ -121,7 +127,7 @@
             var sup = document.getElementById('supervisor').value;
             var secu = document.getElementById('securityOfficer').value;
 
-            window.location = "Invoice?action=ToInvoice&load=" + type + "&height=" + height + "&long=" + depth + "&width=" + width + "&Reached=" + Atime + "&Loaded=" + dtime + "&Name=" + name + "&supervisor=" + sup + "&securityOfficer=" + secu + "&customer=" + customer + "&vehicleNo=" + vnumber + "&qty=" + qty;
+            window.location = "Invoice?action=ToInvoice&load=" + type + "&height=" + height + "&long=" + depth + "&width=" + width + "&Reached=" + Atime + "&Loaded=" + dtime + "&Name=" + name + "&supervisor=" + sup + "&securityOfficer=" + secu + "&customer=" + customer + "&vehicleNo=" + vnumber;
         }
     }
 
@@ -168,6 +174,16 @@
                             </select>
                         </div>
                     </div>
+                            
+                    <div class="clearfix"></div>
+                    <div class="item form-group" style="margin-top: 10px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Qty Level</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="radio"  value="full" name="load" id="load" checked onchange="loadingType()" />Full
+                            <input type="radio" value="custom" name="load" id="load1" onchange="loadingType()" style="margin-left: 20px;"/>Custom
+                        </div>
+                    </div>        
+                            
                     <div class="clearfix"></div>
                     <div class="item form-group" style="margin-top: 10px;">
 
@@ -177,14 +193,7 @@
 
                         </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="item form-group" style="margin-top: 10px;">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Qty Level</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="radio"  value="full" name="load" id="load" checked onchange="loadingType()" />Full
-                            <input type="radio" value="custom" name="load" id="load1" onchange="loadingType()" style="margin-left: 20px;"/>Custom
-                        </div>
-                    </div>        
+                            
                     <div class="clearfix">
                         <div class="clearfix"></div>
                         <div id="width2" class="item form-group" style="margin-top: 10px;">
@@ -207,13 +216,13 @@
                                 <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text"/>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
+<!--                        <div class="clearfix"></div>
                         <div id="lqty" class="hidden" style="margin-top: 10px;">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Loading QTY (Cubic Feet) </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input class="form-control col-md-7 col-xs-12" id="qty" name="qty" placeholder="Enter Loading Quantity" type="number"/>
                             </div>
-                        </div>
+                        </div>-->
 
                         <div class="clearfix"></div>
 

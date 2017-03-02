@@ -22,26 +22,35 @@
     List<Category> category = (List<Category>) request.getAttribute("category");
     Customer customer = (Customer) request.getAttribute("customer");
     String vehicleNo = (String) request.getAttribute("vehicleNo");
-    
     String reached = (String) request.getAttribute("reached");
     String loaded = (String) request.getAttribute("loaded");
     String name = (String) request.getAttribute("name");
     String supervisor = (String) request.getAttribute("supervisor");
     String securityofficer = (String) request.getAttribute("securityofficer");
-    String qty = (String) request.getAttribute("qty");
     String loadType = (String) request.getAttribute("loadType");
-    
+    System.out.println("loading type is ...."+loadType);
     String width= "0";
     String vlong= "0";
     String height= "0";
+    String cube= "0";
     if(loadType.equals("full")){
        width = (String) request.getAttribute("width");
        vlong = (String) request.getAttribute("long");
        height = (String) request.getAttribute("height"); 
-       System.out.println(width+" "+vlong+" "+height);
+//       System.out.println(width+" "+vlong+" "+height);
+       
+        double d = Math.ceil(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0 ;
+//        System.out.println("loading type is full....//////////  "+ qty);
+        double cubeqty = Math.ceil(d);
+        if(cubeqty < 100 && cubeqty > 97){
+            cube="100";
+        }else{
+            cube = Double.toString(cubeqty);
+        }
+//        System.out.println("................................  "+ d);
     }else{
         System.out.println("loading type is custom....");
-        System.out.println("loading type is custom...."+qty);
+//        System.out.println("loading type is custom...."+qty);
     }
             
     
@@ -49,10 +58,12 @@
 //    System.out.println(qty);
 //    System.out.println("...............................");
 //    System.out.println(loadType);
-//    System.out.println("...............................");
+//    System.out.println("...........cube...................."+ cube);
 
 %>
+
 <script type="text/javascript">
+    
     var t = setTimeout(startTime, 1000);
     //add 0 if not exist in time
     function checkTime(i) {
@@ -61,7 +72,18 @@
         } // add zero in front of numbers < 10
         return i;
     }
-
+   
+    
+    function showQtyField(){
+        var qt = "<%=loadType%>";
+//        alert("ok");
+        if(qt === "full"){
+            document.getElementById('cubesqty').className='hidden' ; 
+            
+        }
+        
+    }
+    setTimeout(showQtyField,20);
 
 // Show time in invoice
     function startTime() {
@@ -116,49 +138,70 @@
     }
     var item_details = {};
     function addtogrid() {
-        alert("check");
-        var cat2 = document.getElementById("category").value;
-//        var qty = document.getElementById("lqty").value;
-        var qty = <%=qty%>;
+
+//       
+        var bool = true;
         var type = "<%=loadType%>";
-        <% if(loadType.equals("full")){%>
-        var cube = <%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %>;
-        <%}%>
-//        alert(cube);
-        alert(qty);
-        alert(type);
+        var qty = "<%=cube %>";
+        
+        
+            
+        var cat2 = document.getElementById("category").value;    
         var transport = document.getElementById("transport").value;
-        
         if (cat2 === "") {
+            bool = false;
             sm_warning("Please select a stone category");
-        
-        } else if (transport === "") {
-            sm_warning("Please enter the transport amount");
-        } else {
+        }else{
+            
             var items = {};
             var catarr = cat2.split("~~");
             var catId = catarr[0];
             var catName = catarr[1];
             var catPrice = catarr[2];
-            if(type === "full"){
-                var total = (parseFloat(cube) * parseFloat(catPrice)) + parseFloat(transport);
-            }else{
-                var total = (parseFloat(qty) * parseFloat(catPrice)) + parseFloat(transport);
-            }
             
-//            var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
-//            var totqty = cqty + parseFloat(qty);
-//            document.getElementById("invoicespace").innerHTML = totqty;
+            if(type === "full"){
+                if(transport === ""){
+                    bool = false;
+                    sm_warning("Please select a Transport Amount");
+                }else{
+                    var total = ((parseFloat(catPrice)* parseFloat(qty))/100) + parseFloat(transport);
+//                    alert(qty);
+                    document.getElementById("invoicespace").innerHTML = qty;
+                
+                    document.getElementById("cate").className = 'hidden';
+                    document.getElementById("cubesqty").className = 'hidden';
+                    document.getElementById("trans").className = 'hidden';
+                    document.getElementById("btn").className = 'hidden';
+                }
+ //--------------------------------------------------------------------------------------------------               
+            }else{
+                var c = document.getElementById("qty").value;
+                if(c === ""){
+                    bool = false;
+                    sm_warning("Please select a stone Quantity...");
+                }else if(transport === ""){
+                    bool = false;
+                    sm_warning("Please select a Transport Amount");
+                }else{
+                    qty = document.getElementById("qty").value; 
+                    var total = ((parseFloat(qty) * parseFloat(catPrice))/100) + parseFloat(transport);
+                    var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
+                    var totqty = cqty + parseFloat(qty);
+                    document.getElementById("invoicespace").innerHTML = totqty;
+                }
+                
+            }
             items["category"] = catarr[1];
             items["price"] = catarr[2];
-            
-            if(type === "full"){
-                items["qty"] = cube;
-            }else{
-                items["qty"] = qty;
-            }
-            
+            items["qty"] = qty;
             items["transport"] = transport;
+        }
+            
+            
+            
+
+            
+        if(bool){
             item_details[catId] = items;
             var invoiceItemTable = document.getElementById('invoiceItemTable').getElementsByTagName('tbody')[0];
             var row = document.createElement("tr");
@@ -170,6 +213,8 @@
             var col2 = document.createElement("td");
             col2.type = "text";
             col2.value = qty;
+           
+            
             col2.innerHTML = qty;
             var col3 = document.createElement("td");
             col3.type = "text";
@@ -221,6 +266,13 @@
             document.getElementById("invoicespace").innerHTML = totqty;
             $(this).closest('tr').remove();
             delete item_details[this.id];
+            
+                document.getElementById("cate").className = 'item form-group';
+                document.getElementById("cubesqty").className = 'item form-group';
+                document.getElementById("trans").className = 'item form-group';
+                document.getElementById("btn").className = 'item form-group';
+                document.getElementById('cubesqty').className='hidden' ;
+            
         } else {
         }
     });
@@ -361,13 +413,16 @@
 
 
     function SaveInvoice() {
+        
+//        alert("call........");
         var data = {};
         var width = document.getElementById('width').value;
+        
         var vlong = document.getElementById('vlong').value;
         var height = document.getElementById('height').value;
-        var aspace = parseFloat(document.getElementById('availablespace').innerHTML);
-        var ispace = parseFloat(document.getElementById('invoicespace').innerHTML);
-        if (aspace >= ispace) {
+//        var aspace = parseFloat(document.getElementById('availablespace').innerHTML);
+//        var ispace = parseFloat(document.getElementById('invoicespace').innerHTML);
+//        if (aspace >= ispace) {
             var vno = document.getElementById('vno').value;
             var reached = document.getElementById('reached').value;
             var loaded = document.getElementById('loaded').value;
@@ -410,6 +465,9 @@
 
             data["items"] = item_details;
             var jsonDetails = JSON.stringify(data);
+            
+            
+            
             BootstrapDialog.show({
                 message: 'Do you want to Submit ?',
                 closable: false,
@@ -420,16 +478,18 @@
                             $.ajax({
                                 type: "POST",
                                 url: "Invoice?action=SubmitInvoice&data=" + jsonDetails,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (msg) {
-                                    nom_Success("Successfully Added");
-                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 1500);
-                                },
-                                error: function (errormessage) {
-                                    nom_warning("Somthing went wrong..");
-                                }
+                                    success: function (msg) {
+                                        if (msg === "Success") {
+                                            nom_Success("Successfully  Added");
+                                            setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 800);
+                                            setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
+                                        } else {
+                                            sm_warning("Not Submited , Please Try again");
+                                        }
+                                    }
+
                             });
+                            
                         }
                     }, {
                         label: 'No',
@@ -438,9 +498,9 @@
                         }
                     }]
             });
-        } else {
-            sm_warning("This stone quantity can not load to vehicle...");
-        }
+//        } else {
+//            sm_warning("This stone quantity can not load to vehicle...");
+//        }
     }
 
 
@@ -478,14 +538,14 @@
                             <h1>
                                 <i class="fa fa-globe"></i> Invoice.
                                 <input type="hidden" value="<%=vehicleNo%>" id="vno"/>
-                                <input type="hidden" value="<%=qty%>" id="lqty"/>
+                                <!--<input type="hidden" value="<>" id="lqty"/>-->
                                 <input type="hidden" value="<%=loadType%>" id="ltype"/>
-                                <%if(loadType.equals("full")){%>
+                                
                                 
                                     <input type="hidden" value="<%=width%>" id="width"/>
                                     <input type="hidden" value="<%=vlong%>" id="vlong"/>
                                     <input type="hidden" value="<%=height%>" id="height"/>
-                                <%}%>
+                                
                                 <input type="hidden" value="<%=reached%>" id="reached"/>
                                 <input type="hidden" value="<%=loaded%>" id="loaded"/>
                                 <input type="hidden" value="<%=name%>" id="name"/>
@@ -544,7 +604,7 @@
 
                     <form action="#" method="post" class="form-horizontal form-label-left" validate>
                         <span class="section">Invoice</span>
-                        <div class="item form-group">
+                        <div id="cate" class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Stone Category</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <select class="form-control" name="category" id="category"  required="required" >
@@ -559,19 +619,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Cubes</label>
+                        <div id="cubesqty" class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Stone Quantity</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="qty" id="qty" placeholder="Enter Quantity" required="required" type="number">
                             </div>
                         </div>
-                        <div class="item form-group">
+                        <div id="trans" class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Transport</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="transport" id="transport" placeholder="Enter Amount For Transport" required="required" type="number">
                             </div>
                         </div>
-                        <div class="form-group" >
+                        <div id="btn" class="form-group" >
                             <div class="col-md-3 col-md-offset-3" style="float: right;">
                                 <button id="send" type="button" onclick="addtogrid()" class="btn btn-success">Add Category</button>
                             </div>
@@ -600,24 +660,27 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
+<!--                                    <tr>
                                         <th style="width:50%">Available Space (Cubes)</th>
-                                        <td id="availablespace"><%= Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / (1728*100)) * 100.0) / 100.0       %> Cubes</td>
-                                    </tr>
+                                        <td id="availablespace"> Cubes</td>
+                                    </tr>-->
+                                    <%
+                                    if(loadType.equals("full")){
+                                    %>
                                     <tr>
-                                        <th style="width:50%">Available Space (cubic feet)</th>
-                                        <td id="availablespace">
-                                            <%if(loadType.equals("full")){%>
-                                                <%=Math.round(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0     %> Cubic Feet</td>
-                                            <%}else{%>    
-                                                <%=qty%>
-                                            <%}%>
-                                    
+                                        <th style="width:50%">Total Space(cubic feet)</th>
+                                        <td><span><%=cube%></span></td>
                                     </tr>
+                                    <%
+                                    }else {
+                                    %>
                                     <tr>
-                                        <th style="width:50%">Invoice Space</th>
-                                        <td><span id="invoicespace">00</span> Cubes</td>
+                                        <th style="width:50%">Total Space(cubic feet)</th>
+                                        <td><span id="invoicespace">00</span> Cubic feet</td>
                                     </tr>
+                                    <%
+                                    }
+                                    %>
                                     <tr>
                                         <th style="width:50%">Total</th>
                                         <td id="total">0000.00</td>

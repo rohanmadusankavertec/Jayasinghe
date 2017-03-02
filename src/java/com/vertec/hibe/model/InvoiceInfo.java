@@ -50,9 +50,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "InvoiceInfo.findByReceiver", query = "SELECT i FROM InvoiceInfo i WHERE i.receiver = :receiver")})
 public class InvoiceInfo implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "invoiceInfoId")
-    private Collection<Payment> paymentCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,15 +82,15 @@ public class InvoiceInfo implements Serializable {
     private Double outstanding;
     @Column(name = "receiver")
     private String receiver;
+    @JoinColumn(name = "security_officer_id", referencedColumnName = "id")
+    @ManyToOne
+    private SecurityOfficer securityOfficerId;
+    @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
+    @ManyToOne
+    private Supervisor supervisorId;
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @ManyToOne
     private Customer customerId;
-    @JoinColumn(name = "security_officer_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private SecurityOfficer securityOfficerId;
-    @JoinColumn(name = "supervisor_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Supervisor supervisorId;
     @JoinColumn(name = "added_by", referencedColumnName = "sysuser_id")
     @ManyToOne(optional = false)
     private SysUser addedBy;
@@ -203,14 +200,6 @@ public class InvoiceInfo implements Serializable {
         this.receiver = receiver;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
-    }
-
     public SecurityOfficer getSecurityOfficerId() {
         return securityOfficerId;
     }
@@ -225,6 +214,14 @@ public class InvoiceInfo implements Serializable {
 
     public void setSupervisorId(Supervisor supervisorId) {
         this.supervisorId = supervisorId;
+    }
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Customer customerId) {
+        this.customerId = customerId;
     }
 
     public SysUser getAddedBy() {
@@ -267,15 +264,6 @@ public class InvoiceInfo implements Serializable {
     @Override
     public String toString() {
         return "com.vertec.hibe.model.InvoiceInfo[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Payment> getPaymentCollection() {
-        return paymentCollection;
-    }
-
-    public void setPaymentCollection(Collection<Payment> paymentCollection) {
-        this.paymentCollection = paymentCollection;
     }
     
 }

@@ -52,7 +52,7 @@
             for (Invoice invoice : invoiceList) {
                 InvoiceItems i = new InvoiceItems();
                 i.setCategory(invoice.getCategoryId().getName());
-                System.out.println("calling");
+//                System.out.println("calling");
                 i.setPrice(invoice.getCategoryId().getPrice());
                 i.setQty(invoice.getCubes());
                 i.setTransport(invoice.getTransport());
@@ -142,7 +142,7 @@
 
                     <tr style="border: 1px solid black;">
                         <th style="height: 15px;border: 1px solid black;padding: 10px;">Stone Category</th>
-                        <th style="height: 15px;border: 1px solid black;padding: 10px;">Number of cubes</th>
+                        <th style="height: 15px;border: 1px solid black;padding: 10px;">Number of cubic feet</th>
                         <th style="height: 15px;border: 1px solid black;padding: 10px;">Price</th>
                         <th style="height: 15px;border: 1px solid black;padding: 10px;">Transport</th>
                         <th style="height: 15px;border: 1px solid black;padding: 10px;">Total</th>
@@ -155,7 +155,7 @@
                         <td><%=invoice.getCubes()%></td>
                         <td><%=invoice.getCategoryId().getPrice()%></td>
                         <td><%=invoice.getTransport()%></td>
-                        <td><%=(invoice.getCubes() * invoice.getCategoryId().getPrice()) + invoice.getTransport()%></td>
+                        <td><%=((invoice.getCubes() * invoice.getCategoryId().getPrice())/100) + invoice.getTransport()%></td>
                     </tr>
                     <%}%>
                 </table>
