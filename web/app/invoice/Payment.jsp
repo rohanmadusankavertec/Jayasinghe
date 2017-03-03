@@ -181,9 +181,16 @@
                                 <option disabled selected>Select Invoice</option>
                                 <%
                                     for (InvoiceInfo ii : invoiceList) {
+                                        if(ii.getCustomerId()!=null){
                                 %>
-                                <option  value="<%=ii.getId()%>"><%=ii.getCustomerId().getName() + " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
+                                <option  value="<%=ii.getId()%>"><%=ii.getCustomerId().getName()+ " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
                                 <%
+                                    }else{
+                                    %>
+                                    <option  value="<%=ii.getId()%>"><%=ii.getVehicleNo() + " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
+                                    
+                                    <%
+                                    }
                                     }
                                 %>
                             </select>                              

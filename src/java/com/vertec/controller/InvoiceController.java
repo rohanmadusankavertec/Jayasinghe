@@ -288,6 +288,7 @@ public class InvoiceController extends HttpServlet {
                 case "ToPayment": {
                     System.out.println("To Print");
                     List<InvoiceInfo> invoice = invoicedao.getListOfOutstandingInvoiceInfo();
+                    System.out.println(invoice);
                     request.setAttribute("invoice", invoice);
                     requestDispatcher = request.getRequestDispatcher("app/invoice/Payment.jsp");
                     requestDispatcher.forward(request, response);

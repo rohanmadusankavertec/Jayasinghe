@@ -245,7 +245,7 @@ public class InvoiceDAOImpl {
         if (session != null) {
             try {
                 
-                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid AND i.outstanding>0");
+                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid AND i.outstanding>0 ");
                 query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
                 

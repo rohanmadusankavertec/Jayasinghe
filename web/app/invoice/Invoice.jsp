@@ -28,32 +28,31 @@
     String supervisor = (String) request.getAttribute("supervisor");
     String securityofficer = (String) request.getAttribute("securityofficer");
     String loadType = (String) request.getAttribute("loadType");
-    System.out.println("loading type is ...."+loadType);
-    String width= "0";
-    String vlong= "0";
-    String height= "0";
-    String cube= "0";
-    if(loadType.equals("full")){
-       width = (String) request.getAttribute("width");
-       vlong = (String) request.getAttribute("long");
-       height = (String) request.getAttribute("height"); 
+    System.out.println("loading type is ...." + loadType);
+    String width = "0";
+    String vlong = "0";
+    String height = "0";
+    String cube = "0";
+    if (loadType.equals("full")) {
+        width = (String) request.getAttribute("width");
+        vlong = (String) request.getAttribute("long");
+        height = (String) request.getAttribute("height");
 //       System.out.println(width+" "+vlong+" "+height);
-       
-        double d = Math.ceil(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0 ;
+
+        double d = Math.ceil(((Double.parseDouble(width) * Double.parseDouble(vlong) * Double.parseDouble(height)) / 1728) * 100.0) / 100.0;
 //        System.out.println("loading type is full....//////////  "+ qty);
         double cubeqty = Math.ceil(d);
-        if(cubeqty < 100 && cubeqty > 97){
-            cube="100";
-        }else{
+        if (cubeqty < 100 && cubeqty > 97) {
+            cube = "100";
+        } else {
             cube = Double.toString(cubeqty);
         }
 //        System.out.println("................................  "+ d);
-    }else{
+    } else {
         System.out.println("loading type is custom....");
 //        System.out.println("loading type is custom...."+qty);
     }
-            
-    
+
 //    System.out.println("...............................");
 //    System.out.println(qty);
 //    System.out.println("...............................");
@@ -63,31 +62,30 @@
 %>
 
 <script type="text/javascript">
-    
-    var t = setTimeout(startTime, 1000);
+
+//    var t = setTimeout(startTime, 1000);
     //add 0 if not exist in time
     function checkTime(i) {
         if (i < 10) {
-            i = "0" + i
+            i = "0" + i;
         } // add zero in front of numbers < 10
         return i;
     }
-   
-    
-    function showQtyField(){
+
+
+    function showQtyField() {
         var qt = "<%=loadType%>";
 //        alert("ok");
-        if(qt === "full"){
-            document.getElementById('cubesqty').className='hidden' ; 
-            
+        if (qt === "full") {
+            document.getElementById('cubesqty').className = 'hidden';
+
         }
-        
+        startTime();
     }
-    setTimeout(showQtyField,20);
+    setTimeout(showQtyField, 20);
 
 // Show time in invoice
     function startTime() {
-
         var today = new Date();
         var h = today.getHours();
         var m = today.getMinutes();
@@ -142,66 +140,62 @@
 //       
         var bool = true;
         var type = "<%=loadType%>";
-        var qty = "<%=cube %>";
-        
-        
-            
-        var cat2 = document.getElementById("category").value;    
+        var qty = "<%=cube%>";
+
+
+
+        var cat2 = document.getElementById("category").value;
         var transport = document.getElementById("transport").value;
         if (cat2 === "") {
             bool = false;
             sm_warning("Please select a stone category");
-        }else{
-            
+        } else {
+
             var items = {};
             var catarr = cat2.split("~~");
             var catId = catarr[0];
             var catName = catarr[1];
             var catPrice = catarr[2];
-            
-            if(type === "full"){
-                if(transport === ""){
+
+            if (type === "full") {
+                if (transport === "") {
                     bool = false;
                     sm_warning("Please select a Transport Amount");
-                }else{
-                    var total = ((parseFloat(catPrice)* parseFloat(qty))/100) + parseFloat(transport);
+                } else {
+                    var total = ((parseFloat(catPrice) * parseFloat(qty)) / 100) + parseFloat(transport);
 //                    alert(qty);
 //                    document.getElementById("invoicespace").innerHTML = qty;
-                
+
                     document.getElementById("cate").className = 'hidden';
                     document.getElementById("cubesqty").className = 'hidden';
                     document.getElementById("trans").className = 'hidden';
                     document.getElementById("btn").className = 'hidden';
                 }
- //--------------------------------------------------------------------------------------------------               
-            }else{
+                //--------------------------------------------------------------------------------------------------               
+            } else {
                 var c = document.getElementById("qty").value;
-                if(c === ""){
+                if (c === "") {
                     bool = false;
                     sm_warning("Please select a stone Quantity...");
-                }else if(transport === ""){
+                } else if (transport === "") {
                     bool = false;
                     sm_warning("Please select a Transport Amount");
-                }else{
-                    qty = document.getElementById("qty").value; 
-                    var total = ((parseFloat(qty) * parseFloat(catPrice))/100) + parseFloat(transport);
+                } else {
+                    qty = document.getElementById("qty").value;
+                    var total = ((parseFloat(qty) * parseFloat(catPrice)) / 100) + parseFloat(transport);
                     var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
                     var totqty = cqty + parseFloat(qty);
                     document.getElementById("invoicespace").innerHTML = totqty;
                 }
-                
+
             }
             items["category"] = catarr[1];
             items["price"] = catarr[2];
             items["qty"] = qty;
             items["transport"] = transport;
         }
-            
-            
-            
 
-            
-        if(bool){
+        if (bool) {
             item_details[catId] = items;
             var invoiceItemTable = document.getElementById('invoiceItemTable').getElementsByTagName('tbody')[0];
             var row = document.createElement("tr");
@@ -213,8 +207,8 @@
             var col2 = document.createElement("td");
             col2.type = "text";
             col2.value = qty;
-           
-            
+
+
             col2.innerHTML = qty;
             var col3 = document.createElement("td");
             col3.type = "text";
@@ -266,14 +260,12 @@
             document.getElementById("invoicespace").innerHTML = totqty;
             $(this).closest('tr').remove();
             delete item_details[this.id];
-            
-                document.getElementById("cate").className = 'item form-group';
-                document.getElementById("cubesqty").className = 'item form-group';
-                document.getElementById("trans").className = 'item form-group';
-                document.getElementById("btn").className = 'item form-group';
-                document.getElementById('cubesqty').className='hidden' ;
-            
-        } else {
+            document.getElementById("cate").className = 'item form-group';
+            document.getElementById("cubesqty").className = 'item form-group';
+            document.getElementById("trans").className = 'item form-group';
+            document.getElementById("btn").className = 'item form-group';
+            document.getElementById('cubesqty').className = 'hidden';
+
         }
     });
     function sm_alert(text) {
@@ -303,107 +295,6 @@
             size: BootstrapDialog.SIZE_NORMAL
         });
     }
-// Save Invoice
-//    function SaveInvoice() {
-//        var data = {};
-//        var width = document.getElementById('width').value;
-//        var vlong = document.getElementById('vlong').value;
-//        var height = document.getElementById('height').value;
-//        var aspace = parseFloat(document.getElementById('availablespace').innerHTML);
-//        var ispace = parseFloat(document.getElementById('invoicespace').innerHTML);
-//
-//        if (aspace > ispace) {
-//            var vno = document.getElementById('vno').value;
-//            var reached = document.getElementById('reached').value;
-//            var loaded = document.getElementById('loaded').value;
-//            var name = document.getElementById('name').value;
-//            var supervisor = document.getElementById('supervisor').value;
-//            var security = document.getElementById('security').value;
-//            var customer = document.getElementById('customer').value;
-//            var total = document.getElementById('total').innerHTML;
-//            var chequeNo = document.getElementById('chequeNo').value;
-//            var bankName = document.getElementById('bankName').value;
-//            var chequeDate = document.getElementById('chequeDate').value;
-//            var payment = document.getElementById('payment').value;
-//
-//            if (payment === "") {
-//                payment = "0";
-//            }
-//            var outstanding = document.getElementById('ost').innerHTML;
-//            var pt = 0;
-//            var ptype = document.getElementById("cash");
-//            if (ptype.checked) {
-//                pt = 1;
-//            }
-//            data["vno"] = vno;
-//            data["width"] = width;
-//            data["vlong"] = vlong;
-//            data["height"] = height;
-//            data["reached"] = reached;
-//            data["loaded"] = loaded;
-//            data["name"] = name;
-//            data["supervisor"] = supervisor;
-//            data["security"] = security;
-//            data["customer"] = customer;
-//            data["total"] = total;
-//            data["chequeNo"] = chequeNo;
-//            data["bankName"] = bankName;
-//            data["chequeDate"] = chequeDate;
-//            data["payment"] = payment;
-//            data["outstanding"] = outstanding;
-//            data["payType"] = pt;
-//            
-////            data["maindata"]=vno+"~"+width+"~"+vlong+"~"+height+"~"+reached+"~"+loaded+"~"+name+"~"+supervisor+"~"+security+"~"+customer+"~"+total+"~"+chequeNo+"~"+bankName+"~"+chequeDate+"~"+payment+"~"+outstanding+"~"+outstanding+"~"+pt;
-//            
-//            data["items"] = item_details;
-//            var jsonDetails = JSON.stringify(data);
-//
-//            BootstrapDialog.show({
-//                message: 'Do you want to Submit ?',
-//                closable: false,
-//                buttons: [{
-//                        label: 'Yes',
-//                        action: function (dialogRef) {
-//                            dialogRef.close();
-//                            var xmlHttp = getAjaxObject();
-//                            xmlHttp.onreadystatechange = function ()
-//                            {
-//                                if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-//                                {
-//                                    var reply = xmlHttp.responseText;
-//                                    if (reply === "Success") {
-//                                        nom_Success("Successfully Added");
-//                                        setTimeout("location.href = 'Invoice?action=PrintLastInvoice';", 1500);
-//                                    } else {
-//                                        sm_warning("Invoice Not Correctly Entered Please Try Again");
-//                                    }
-//                                }
-//                            };
-//                            xmlHttp.open("POST", "Invoice?action=SubmitInvoice&data=" + jsonDetails, true);
-//                            xmlHttp.send();
-//                        }
-//                    }, {
-//                        label: 'No',
-//                        action: function (dialogRef) {
-//                            dialogRef.close();
-//                        }
-//                    }]
-//            });
-//        } else {
-//            sm_warning("This stone quantity can not load to vehicle...");
-//        }
-//    }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -413,94 +304,90 @@
 
 
     function SaveInvoice() {
-        
+
 //        alert("call........");
         var data = {};
         var width = document.getElementById('width').value;
-        
+
         var vlong = document.getElementById('vlong').value;
         var height = document.getElementById('height').value;
 //        var aspace = parseFloat(document.getElementById('availablespace').innerHTML);
 //        var ispace = parseFloat(document.getElementById('invoicespace').innerHTML);
 //        if (aspace >= ispace) {
-            var vno = document.getElementById('vno').value;
-            var reached = document.getElementById('reached').value;
-            var loaded = document.getElementById('loaded').value;
-            var name = document.getElementById('name').value;
-            var supervisor = document.getElementById('supervisor').value;
-            var security = document.getElementById('security').value;
-            var customer = document.getElementById('customer').value;
-            var total = document.getElementById('total').innerHTML;
-            var chequeNo = document.getElementById('chequeNo').value;
-            var bankName = document.getElementById('bankName').value;
-            var chequeDate = document.getElementById('chequeDate').value;
-            var payment = document.getElementById('payment').value;
-            if (payment === "") {
-                payment = "0";
-            }
-            var outstanding = document.getElementById('ost').innerHTML;
-            var pt = 0;
-            var ptype = document.getElementById("cash");
-            if (ptype.checked) {
-                pt = 1;
-            }
-            data["vno"] = vno;
-            data["width"] = width;
-            data["vlong"] = vlong;
-            data["height"] = height;
-            data["reached"] = reached;
-            data["loaded"] = loaded;
-            data["name"] = name;
-            data["supervisor"] = supervisor;
-            data["security"] = security;
-            data["customer"] = customer;
-            data["total"] = total;
-            data["chequeNo"] = chequeNo;
-            data["bankName"] = bankName;
-            data["chequeDate"] = chequeDate;
-            data["payment"] = payment;
-            data["outstanding"] = outstanding;
-            data["payType"] = pt;
+        var vno = document.getElementById('vno').value;
+        var reached = document.getElementById('reached').value;
+        var loaded = document.getElementById('loaded').value;
+        var name = document.getElementById('name').value;
+        var supervisor = document.getElementById('supervisor').value;
+        var security = document.getElementById('security').value;
+        var customer = document.getElementById('customer').value;
+        var total = document.getElementById('total').innerHTML;
+        var chequeNo = document.getElementById('chequeNo').value;
+        var bankName = document.getElementById('bankName').value;
+        var chequeDate = document.getElementById('chequeDate').value;
+        var payment = document.getElementById('payment').value;
+        if (payment === "") {
+            payment = "0";
+        }
+        var outstanding = document.getElementById('ost').innerHTML;
+        var pt = 0;
+        var ptype = document.getElementById("cash");
+        if (ptype.checked) {
+            pt = 1;
+        }
+        data["vno"] = vno;
+        data["width"] = width;
+        data["vlong"] = vlong;
+        data["height"] = height;
+        data["reached"] = reached;
+        data["loaded"] = loaded;
+        data["name"] = name;
+        data["supervisor"] = supervisor;
+        data["security"] = security;
+        data["customer"] = customer;
+        data["total"] = total;
+        data["chequeNo"] = chequeNo;
+        data["bankName"] = bankName;
+        data["chequeDate"] = chequeDate;
+        data["payment"] = payment;
+        data["outstanding"] = outstanding;
+        data["payType"] = pt;
 //            data["maindata"]=vno+"~"+width+"~"+vlong+"~"+height+"~"+reached+"~"+loaded+"~"+name+"~"+supervisor+"~"+security+"~"+customer+"~"+total+"~"+chequeNo+"~"+bankName+"~"+chequeDate+"~"+payment+"~"+outstanding+"~"+outstanding+"~"+pt;
 
-            data["items"] = item_details;
-            var jsonDetails = JSON.stringify(data);
-            
-            
-            
-            BootstrapDialog.show({
-                message: 'Do you want to Submit ?',
-                closable: false,
-                buttons: [{
-                        label: 'Yes',
-                        action: function (dialogRef) {
-                            dialogRef.close();
-                            $.ajax({
-                                type: "POST",
-                                url: "Invoice?action=SubmitInvoice&data=" + jsonDetails,
-                                    success: function (msg) {
-                                        if (msg === "Success") {
-                                            nom_Success("Successfully  Added");
-                                            window.open('Invoice?action=PrintLastInvoice','_blank');
-                                            
-                                            setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
-                                            
-                                            setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
-                                        } else {
-                                            sm_warning("Not Submited , Please Try again");
-                                        }
-                                    }
+        data["items"] = item_details;
+        var jsonDetails = JSON.stringify(data);
 
-                            });
-                            
-                        }
-                    }, {
-                        label: 'No',
-                        action: function (dialogRef) {
-                            dialogRef.close();
-                        }
-                    }]
-            });
+
+
+        BootstrapDialog.show({
+            message: 'Do you want to Submit ?',
+            closable: false,
+            buttons: [{
+                    label: 'Yes',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                        $.ajax({
+                            type: "POST",
+                            url: "Invoice?action=SubmitInvoice&data=" + jsonDetails,
+                            success: function (msg) {
+                                if (msg === "Success") {
+                                    nom_Success("Successfully  Added");
+                                    console.log("rohan");
+                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
+                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
+                                } else {
+                                    sm_warning("Not Submited , Please Try again");
+                                }
+                            }
+                        });
+                    }
+                }, {
+                    label: 'No',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+        });
 //        } else {
 //            sm_warning("This stone quantity can not load to vehicle...");
 //        }
@@ -512,7 +399,94 @@
 
 
 
+//
+//    function SaveInvoice() {
+//
+//        var data = {};
+//        var width = document.getElementById('width').value;
+//
+//        var vlong = document.getElementById('vlong').value;
+//        var height = document.getElementById('height').value;
+//        var vno = document.getElementById('vno').value;
+//        var reached = document.getElementById('reached').value;
+//        var loaded = document.getElementById('loaded').value;
+//        var name = document.getElementById('name').value;
+//        var supervisor = document.getElementById('supervisor').value;
+//        var security = document.getElementById('security').value;
+//        var customer = document.getElementById('customer').value;
+//        var total = document.getElementById('total').innerHTML;
+//        var chequeNo = document.getElementById('chequeNo').value;
+//        var bankName = document.getElementById('bankName').value;
+//        var chequeDate = document.getElementById('chequeDate').value;
+//        var payment = document.getElementById('payment').value;
+//        if (payment === "") {
+//            payment = "0";
+//        }
+//        var outstanding = document.getElementById('ost').innerHTML;
+//        var pt = 0;
+//        var ptype = document.getElementById("cash");
+//        if (ptype.checked) {
+//            pt = 1;
+//        }
+//        data["vno"] = vno;
+//        data["width"] = width;
+//        data["vlong"] = vlong;
+//        data["height"] = height;
+//        data["reached"] = reached;
+//        data["loaded"] = loaded;
+//        data["name"] = name;
+//        data["supervisor"] = supervisor;
+//        data["security"] = security;
+//        data["customer"] = customer;
+//        data["total"] = total;
+//        data["chequeNo"] = chequeNo;
+//        data["bankName"] = bankName;
+//        data["chequeDate"] = chequeDate;
+//        data["payment"] = payment;
+//        data["outstanding"] = outstanding;
+//        data["payType"] = pt;
+//
+//        data["items"] = item_details;
+//        var jsonDetails = JSON.stringify(data);
+//
+//        console.log();
+//
+//        BootstrapDialog.show({
+//            message: 'Do you want to Submit ?',
+//            closable: false,
+//            buttons: [{
+//                    label: 'Yes',
+//                    action: function (dialogRef) {
+//                        dialogRef.close();
+//                        $.ajax({
+//                            type: "POST",
+//                            url: "Invoice?action=SubmitInvoice&data=" + jsonDetails,
+//                            success: function (msg) {
+//                                if (msg === "Success") {
+//                                    nom_Success("Successfully  Added");
+//
+//                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
+//
+//                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
+//                                } else {
+//                                    sm_warning("Not Submited , Please Try again");
+//                                }
+//                            }
+//
+//                        });
+//
+//                    }
+//                }, {
+//                    label: 'No',
+//                    action: function (dialogRef) {
+//                        dialogRef.close();
+//                    }
+//                }]
+//        });
+//    }
+//
 
+    /**/
 
 
 </script>
@@ -543,34 +517,32 @@
                                 <input type="hidden" value="<%=vehicleNo%>" id="vno"/>
                                 <!--<input type="hidden" value="<>" id="lqty"/>-->
                                 <input type="hidden" value="<%=loadType%>" id="ltype"/>
-                                
-                                
-                                    <input type="hidden" value="<%=width%>" id="width"/>
-                                    <input type="hidden" value="<%=vlong%>" id="vlong"/>
-                                    <input type="hidden" value="<%=height%>" id="height"/>
-                                
+
+
+                                <input type="hidden" value="<%=width%>" id="width"/>
+                                <input type="hidden" value="<%=vlong%>" id="vlong"/>
+                                <input type="hidden" value="<%=height%>" id="height"/>
+
                                 <input type="hidden" value="<%=reached%>" id="reached"/>
                                 <input type="hidden" value="<%=loaded%>" id="loaded"/>
                                 <input type="hidden" value="<%=name%>" id="name"/>
                                 <input type="hidden" value="<%=supervisor%>" id="supervisor"/>
                                 <input type="hidden" value="<%=securityofficer%>" id="security"/>
-                                
+
                                 <%
                                     Date date = new Date();
                                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                     String date2 = sdf.format(date);
-                                    
 
-                                    String cusid="";
-                                    String cusname="";
-                                    String cusadd="";
-                                    
-                                    if(customer!=null){
-                                        cusid=customer.getId()+"";
-                                        cusname=customer.getName();
-                                        cusadd=customer.getName();
+                                    String cusid = "";
+                                    String cusname = "";
+                                    String cusadd = "";
+
+                                    if (customer != null) {
+                                        cusid = customer.getId() + "";
+                                        cusname = customer.getName();
+                                        cusadd = customer.getName();
                                     }
-
 
 
                                 %>
@@ -596,11 +568,11 @@
                             <address>
                                 <strong><%=cusname%></strong><br/>
                                 <%
-                                    if(!cusadd.equals("")){
-                                    out.write(cusadd.replace(",", "<br>"));
+                                    if (!cusadd.equals("")) {
+                                        out.write(cusadd.replace(",", "<br>"));
                                     }
-                                    
-                                    %>
+
+                                %>
                             </address>
                         </div>
                     </div>
@@ -612,8 +584,7 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <select class="form-control" name="category" id="category"  required="required" >
                                     <option value="" disabled selected="true">Select Stone Category</option>
-                                    <%
-                                        for (Category c : category) {
+                                    <%                                        for (Category c : category) {
                                     %>
                                     <option value="<%=c.getId() + "~~" + c.getName() + "~~" + c.getPrice()%>"><%=c.getName() + " - Rs:" + c.getPrice()%></option>
                                     <%
@@ -663,26 +634,26 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-<!--                                    <tr>
-                                        <th style="width:50%">Available Space (Cubes)</th>
-                                        <td id="availablespace"> Cubes</td>
-                                    </tr>-->
+                                    <!--                                    <tr>
+                                                                            <th style="width:50%">Available Space (Cubes)</th>
+                                                                            <td id="availablespace"> Cubes</td>
+                                                                        </tr>-->
                                     <%
-                                    if(loadType.equals("full")){
+                                        if (loadType.equals("full")) {
                                     %>
                                     <tr>
                                         <th style="width:50%">Total Space(cubic feet)</th>
                                         <td><span><%=cube%></span></td>
                                     </tr>
                                     <%
-                                    }else {
+                                    } else {
                                     %>
                                     <tr>
                                         <th style="width:50%">Total Space(cubic feet)</th>
                                         <td><span id="invoicespace">00</span> Cubic feet</td>
                                     </tr>
                                     <%
-                                    }
+                                        }
                                     %>
                                     <tr>
                                         <th style="width:50%">Total</th>
