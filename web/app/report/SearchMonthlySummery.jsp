@@ -29,7 +29,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form action="Report?action=DailySummery" method="post" class="form-horizontal form-label-left" validate>
+                    <form action="Report?action=MonthlySummery" method="post" class="form-horizontal form-label-left" validate>
                         <span class="section">Search Monthly Summery</span>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">From Date
