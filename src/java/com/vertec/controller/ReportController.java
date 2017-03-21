@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -113,6 +115,19 @@ public class ReportController extends HttpServlet {
                 case "SearchMonthlySummery": {
                     requestDispatcher = request.getRequestDispatcher("app/report/SearchMonthlySummery.jsp");
                     requestDispatcher.forward(request, response);
+                    break;
+                }
+                case "dashboard": {
+                    JSONObject jOB = new JSONObject();
+                    JSONArray jar1 = new JSONArray();
+                    JSONObject job1 = new JSONObject();
+                    job1.put("allsales", reportdao.getTotalSales());
+                    job1.put("cashpayments", reportdao.getTotalCashPayment());
+                    job1.put("chequepayment", reportdao.getTotalChequePayment());
+                    job1.put("outstandingpayment", reportdao.getTotalOutstanding());
+                    jar1.add(job1);
+                    jOB.put("des", jar1);
+                    response.getWriter().write(jOB.toString());
                     break;
                 }
             }

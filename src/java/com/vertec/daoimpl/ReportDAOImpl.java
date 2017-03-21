@@ -194,4 +194,132 @@ public class ReportDAOImpl {
         return null;
 
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public Double getTotalSales() {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("SELECT SUM(ii.total) FROM InvoiceInfo ii Where ii.isValid=:isValid and date=:date");
+                query.setParameter("isValid", true);
+                query.setParameter("date", new Date());
+                double cuList =0.0;
+                if(query.uniqueResult()!=null){
+                cuList =Double.parseDouble(query.uniqueResult() + "");
+                
+                }
+                
+                return cuList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return 0.0;
+    }
+    public Double getTotalOutstanding() {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("SELECT SUM(ii.outstanding) FROM InvoiceInfo ii Where ii.isValid=:isValid and date=:date");
+                query.setParameter("isValid", true);
+                query.setParameter("date", new Date());
+                double cuList =0.0;
+                if(query.uniqueResult()!=null){
+                cuList =Double.parseDouble(query.uniqueResult() + "");
+                
+                }
+                
+                return cuList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return 0.0;
+    }
+    
+    public Double getTotalCashPayment() {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date d = new Date();
+                String cudate = sdf.format(d);
+                
+                
+                Query query = session.createSQLQuery("SELECT SUM(p.amount) FROM payment p Where p.payment_type_id=:pt and date like '"+cudate+"%'");
+                query.setParameter("pt", 1);
+                    
+                
+                
+//                query.setParameter("date", cudate);
+                double cuList =0.0;
+                if(query.uniqueResult()!=null){
+                cuList =Double.parseDouble(query.uniqueResult() + "");
+                
+                }
+                
+                return cuList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return 0.0;
+    }
+    
+    public Double getTotalChequePayment() {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date d = new Date();
+                String cudate = sdf.format(d);
+                
+                
+                Query query = session.createSQLQuery("SELECT SUM(p.amount) FROM payment p Where p.payment_type_id=:pt and date like '"+cudate+"%'");
+                query.setParameter("pt", 2);
+                    
+                
+                
+//                query.setParameter("date", cudate);
+                double cuList =0.0;
+                if(query.uniqueResult()!=null){
+                cuList =Double.parseDouble(query.uniqueResult() + "");
+                
+                }
+                
+                return cuList;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return 0.0;
+    }
 }
