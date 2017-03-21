@@ -121,7 +121,8 @@ public class ReportDAOImpl {
                     ex.printStackTrace();
                 }
                 System.out.println("callint methord........."+summeryDate);
-                Query query = session.createSQLQuery("SELECT ii FROM invoice_info ii INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date =:date GROUP BY ii.id");
+//                Query query = session.createSQLQuery("SELECT ii FROM invoice_info ii INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date =:date GROUP BY ii.id");
+                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.date=:date AND i.isValid=:isValid ");
                 query.setParameter("isValid", true);
                 query.setParameter("date", summeryDate);
                 List<InvoiceInfo> csList = query.list();

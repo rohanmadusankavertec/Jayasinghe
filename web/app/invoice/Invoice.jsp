@@ -564,10 +564,7 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <!--                                    <tr>
-                                                                            <th style="width:50%">Available Space (Cubes)</th>
-                                                                            <td id="availablespace"> Cubes</td>
-                                                                        </tr>-->
+                                    
                                     <%
                                         if (loadType.equals("full")) {
                                     %>
@@ -587,7 +584,7 @@
                                     %>
                                     <tr>
                                         <th style="width:50%">Total</th>
-                                        <td id="total">0000.00</td>
+                                        <td ><span id="total">0000.00</span> LKR</td>
                                     </tr>
                                     <tr>
                                         <th>Payment Type:</th>
@@ -618,11 +615,11 @@
                                     </tr>
                                     <tr>
                                         <th>Outstanding:</th>
-                                        <td id="ost">0000.00</td>
+                                        <td><span id="ost">0000.00</span>LKR</td>
                                     </tr>
                                     <tr>
                                         <th>Balance</th>
-                                        <td id="bal">0000.00</td>
+                                        <td><span id="bal">0000.00</span>LKR</td>
                                     </tr>
                                 </tbody>
                             </table>

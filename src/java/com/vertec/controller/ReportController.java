@@ -88,6 +88,7 @@ public class ReportController extends HttpServlet {
                     String date = request.getParameter("date").trim();
                     List<InvoiceInfo> list=reportdao.getDailySummery(date);
                     request.setAttribute("dailycollection", list);
+                    request.setAttribute("date", date);
                     requestDispatcher = request.getRequestDispatcher("app/report/DailySummery.jsp");
                     requestDispatcher.forward(request, response);
                     break;
