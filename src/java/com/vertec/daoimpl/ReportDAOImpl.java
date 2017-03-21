@@ -5,6 +5,7 @@
  */
 package com.vertec.daoimpl;
 
+import com.vertec.hibe.model.InvoiceInfo;
 import com.vertec.util.NewHibernateUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,7 +105,7 @@ public class ReportDAOImpl {
     }
     
     
-    public List<Object[]> getDailySummery(String date) {
+    public List<InvoiceInfo> getDailySummery(String date) {
         System.out.println("callint methord.........");
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -120,13 +121,11 @@ public class ReportDAOImpl {
                     ex.printStackTrace();
                 }
                 System.out.println("callint methord........."+summeryDate);
-                Query query = session.createSQLQuery("SELECT c.name,ii.total,ii.outstanding FROM invoice_info ii INNER JOIN customer c ON c.id=ii.customer_id INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date =:date GROUP BY ii.id");
+                Query query = session.createSQLQuery("SELECT ii FROM invoice_info ii INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date =:date GROUP BY ii.id");
                 query.setParameter("isValid", true);
                 query.setParameter("date", summeryDate);
-                List<Object[]> csList = query.list();
-                for (Object[] o : csList) {
-                    System.out.println(o[0].toString()+","+o[1].toString()+","+o[2].toString());
-                }
+                List<InvoiceInfo> csList = query.list();
+                
 
                 return csList;
 

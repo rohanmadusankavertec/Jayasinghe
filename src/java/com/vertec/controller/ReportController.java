@@ -6,6 +6,7 @@
 package com.vertec.controller;
 
 import com.vertec.daoimpl.ReportDAOImpl;
+import com.vertec.hibe.model.InvoiceInfo;
 import com.vertec.hibe.model.SysUser;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -78,11 +79,16 @@ public class ReportController extends HttpServlet {
                     requestDispatcher.forward(request, response);
                     break;
                 }
+                case "SearchDailySummery": {
+                    requestDispatcher = request.getRequestDispatcher("app/report/SearchDailySummery.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+                }
                 case "DailySummery": {
                     String date = request.getParameter("date").trim();
-                    List<Object[]> list=reportdao.getDailySummery(date);
+                    List<InvoiceInfo> list=reportdao.getDailySummery(date);
                     request.setAttribute("dailycollection", list);
-                    requestDispatcher = request.getRequestDispatcher("app/report/DailyCollection.jsp");
+                    requestDispatcher = request.getRequestDispatcher("app/report/DailySummery.jsp");
                     requestDispatcher.forward(request, response);
                     break;
                 }
