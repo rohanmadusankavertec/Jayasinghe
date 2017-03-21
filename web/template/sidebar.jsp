@@ -26,7 +26,7 @@
             <a href="${context}/dashboard.jsp" class="site_title">
                 <!--<img src="${context}/resources/images/payroll-Logo.jpg" style="width: 200px; height: 60px;"/>-->
                 Jayasinghe <small>Construction</small>
-                
+
             </a>
         </div>
         <div class="clearfix"></div>
@@ -46,46 +46,48 @@
                         <ul class="nav child_menu" style="display: none">
                             <%if (ca.checkUserAuth("MANAGE_CUSTOMERS", group) != null) {%>
                             <li><a href="${context}/Registration?action=ViewCustomer">Manage Customers</a></li>
-                            <%}%>
-                             <%if (ca.checkUserAuth("MANAGE_CATEGORY", group) != null) {%>
+                                <%}%>
+                                <%if (ca.checkUserAuth("MANAGE_CATEGORY", group) != null) {%>
                             <li><a href="${context}/Registration?action=ViewCategory">Manage Categories</a></li>
-                            <%}%>
-                             <%if (ca.checkUserAuth("MANAGE_SUPERVISOR", group) != null) {%>
+                                <%}%>
+                                <%if (ca.checkUserAuth("MANAGE_SUPERVISOR", group) != null) {%>
                             <li><a href="${context}/Registration?action=ViewSupervisor">Manage Supervisors</a></li>
-                            <%}%>
-                             <%if (ca.checkUserAuth("MANAGE_SECURITY", group) != null) {%>
+                                <%}%>
+                                <%if (ca.checkUserAuth("MANAGE_SECURITY", group) != null) {%>
                             <li><a href="${context}/Registration?action=ViewSecurityOfficer">Manage Security Officers</a></li>
-                            <%}%>
+                                <%}%>
                         </ul>
                     </li>
                     <li><a><i class="fa fa-file-text"></i> Invoice <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu" style="display: none">
                             <%if (ca.checkUserAuth("INVOICE", group) != null) {%>
-                             <li><a href="${context}/Invoice?action=ToCreateInvoice">Invoice</a></li>
-                             <%}%>
-                             <%if (ca.checkUserAuth("VIEW_INVOICE", group) != null) {%>
-                             <li><a href="${context}/Invoice?action=ViewInvoice">View Invoices</a></li>
-                             <%}%>
-                             <%if (ca.checkUserAuth("PAYMENTS", group) != null) {%>
-                             <li><a href="${context}/Invoice?action=ToPayment">Payments</a></li>
-                             <%}%>
-                             <%if (ca.checkUserAuth("CHEQUE", group) != null) {%>
-                             <li><a href="${context}/Invoice?action=ViewCheques">Cheques</a></li>
-                             <%}%>
-                             <li><a href="${context}/Invoice?action=SearchPayment">View Payments</a></li>
+                            <li><a href="${context}/Invoice?action=ToCreateInvoice">Invoice</a></li>
+                                <%}%>
+                                <%if (ca.checkUserAuth("VIEW_INVOICE", group) != null) {%>
+                            <li><a href="${context}/Invoice?action=ViewInvoice">View Invoices</a></li>
+                                <%}%>
+                                <%if (ca.checkUserAuth("PAYMENTS", group) != null) {%>
+                            <li><a href="${context}/Invoice?action=ToPayment">Payments</a></li>
+                                <%}%>
+                                <%if (ca.checkUserAuth("CHEQUE", group) != null) {%>
+                            <li><a href="${context}/Invoice?action=ViewCheques">Cheques</a></li>
+                                <%}%>
+                            <li><a href="${context}/Invoice?action=SearchPayment">View Payments</a></li>
                         </ul>
                     </li>
-                   <li><a><i class="fa fa-newspaper-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-newspaper-o"></i> Reports <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu" style="display: none">
-                            <%if (ca.checkUserAuth("DAILY_SALES", group) != null) {%>
-                             <li><a href="${context}/Report?action=SearchDailySales">Daily Sales</a></li>
-                             <%}%>
-                             <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
-                             <li><a href="${context}/Report?action=CreditorPurchaseHistory">Creditor Purchase History</a></li>
-                             <%}%>
-                             <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
-                             <li><a href="${context}/Report?action=SearchDailySummery">Daily Summery</a></li>
-                             <%}%>
+
+ <!--<li><a href="${context}/Report?action=SearchDailySales">Daily Sales</a></li>-->
+
+                            <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
+                            <li><a href="${context}/Report?action=CreditorPurchaseHistory">Creditor Purchase History</a></li>
+                                <%}%>
+                                <%if (ca.checkUserAuth("DAILY_SALES", group) != null) {%>
+                            <li><a href="${context}/Report?action=SearchDailySummery">Daily Summery</a></li>
+
+                            <li><a href="${context}/Report?action=SearchMonthlySummery">Monthly Summery</a></li>
+                                <%}%>
                         </ul>
                     </li>
                     <li><a><i class="fa fa-user-secret"></i>User Management<span class="fa fa-chevron-down"></span></a>
@@ -123,7 +125,7 @@
                             <%}%>
                         </ul>
                     </li>
-                    
+
                 </ul>
             </div>
         </div>

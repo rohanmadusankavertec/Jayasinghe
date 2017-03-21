@@ -91,15 +91,21 @@ public class ReportController extends HttpServlet {
                     break;
                 }
                 case "DailySummery": {
-                    String date = request.getParameter("date").trim();
-                    List<InvoiceInfo> list=reportdao.getDailySummery(date);
+                    String from = request.getParameter("from").trim();
+                    String to = request.getParameter("to").trim();
+                    List<InvoiceInfo> list=reportdao.getMonthlySummery(from, to);
                     request.setAttribute("dailycollection", list);
-                    request.setAttribute("date", date);
-                    requestDispatcher = request.getRequestDispatcher("app/report/DailySummery.jsp");
+                    request.setAttribute("from", from);
+                    request.setAttribute("to", to);
+                    requestDispatcher = request.getRequestDispatcher("app/report/MonthlySummery.jsp");
                     requestDispatcher.forward(request, response);
                     break;
                 }
-                
+                case "SearchMonthlySummery": {
+                    requestDispatcher = request.getRequestDispatcher("app/report/SearchMonthlySummery.jsp");
+                    requestDispatcher.forward(request, response);
+                    break;
+                }
             }
         }
     }

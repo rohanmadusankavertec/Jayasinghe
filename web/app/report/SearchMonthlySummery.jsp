@@ -16,7 +16,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Search Daily Summery</h2>
+                    <h2>Search Monthly Summery</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -30,12 +30,19 @@
                 </div>
                 <div class="x_content">
                     <form action="Report?action=DailySummery" method="post" class="form-horizontal form-label-left" validate>
-                        <span class="section">Search Daily Summery</span>
+                        <span class="section">Search Monthly Summery</span>
                         <div class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Date
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">From Date
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" name="date" placeholder="Enter Date Ex:yyyy-mm-dd" required="required" type="date">
+                                <input class="form-control col-md-7 col-xs-12" name="from" placeholder="Enter Date Ex:yyyy-mm-dd" required="required" type="date">
+                            </div>
+                        </div>
+                        <div class="item form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">To Date
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input class="form-control col-md-7 col-xs-12" name="to" placeholder="Enter Date Ex:yyyy-mm-dd" required="required" type="date">
                             </div>
                         </div>
                         <div class="ln_solid"></div>

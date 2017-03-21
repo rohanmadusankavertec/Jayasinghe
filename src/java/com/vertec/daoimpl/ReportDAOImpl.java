@@ -152,4 +152,46 @@ public class ReportDAOImpl {
         return null;
 
     }
+    
+    
+    public List<InvoiceInfo> getMonthlySummery(String from,String to) {
+        System.out.println("callint methord.........");
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+
+        if (session != null) {
+            try {
+
+                SimpleDateFormat date2 = new SimpleDateFormat("yyyy-MM-dd");
+
+                Date fromDate = null;
+                Date toDate = null;
+                try {
+                    fromDate = date2.parse(from);
+                    toDate = date2.parse(to);
+                } catch (java.text.ParseException ex) {
+                    ex.printStackTrace();
+                }
+//                System.out.println("callint methord........."+summeryDate);
+//                Query query = session.createSQLQuery("SELECT ii FROM invoice_info ii INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date =:date GROUP BY ii.id");
+                Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid AND i.date between :from and :to  ");
+                query.setParameter("isValid", true);
+                query.setParameter("from", fromDate);
+                query.setParameter("to", toDate);
+                List<InvoiceInfo> csList = query.list();
+                
+
+                return csList;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+
+        return null;
+
+    }
 }
