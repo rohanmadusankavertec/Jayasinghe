@@ -34,14 +34,24 @@
                     size: 21.59cm 13.97cm ;
                     size: portrait;
                 }
-
+                body{ background-color:#FFFFFF; background-image:none; color:#000000 }
+                #ad{ display:none;}
+                #leftbar{ display:none;}
+                #contentarea{ width:100%;}
             }
         </style>
-
+        <script type="text/javascript">
+            function printthis() {
+                window.print();
+                window.onfocus = function () {
+                    window.close();
+                };
+            }
+        </script>
 
 
     </head>
-    <body onload="window.print();">
+    <body onload="printthis();">
 
         <%
             String id = request.getParameter("id");
@@ -215,11 +225,11 @@
                                 <td>Supervisor</td>
                                 <td>:</td>
                                 <td><%
-                                    
-                                    if(iin.getSupervisorId()!=null){
-                                    out.write(iin.getSupervisorId().getName());
+
+                                    if (iin.getSupervisorId() != null) {
+                                        out.write(iin.getSupervisorId().getName());
                                     }
-                                %></td>
+                                    %></td>
                             </tr>
                             <tr style="height: 20px;">
                                 <td>Sign </td>

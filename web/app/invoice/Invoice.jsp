@@ -73,7 +73,14 @@
     }
 
 
+    window.history.forward();
+    function noBack() {
+        window.history.forward();
+    }
+
+
     function showQtyField() {
+        window.history.forward(-1);
         var qt = "<%=loadType%>";
 //        alert("ok");
         if (qt === "full") {
@@ -82,7 +89,7 @@
         }
         startTime();
     }
-    setTimeout(showQtyField, 20);
+    setTimeout(showQtyField, 1000);
 
 // Show time in invoice
     function startTime() {
@@ -372,9 +379,13 @@
                             success: function (msg) {
                                 if (msg === "Success") {
                                     nom_Success("Successfully  Added");
-                                    console.log("rohan");
-                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
-                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
+
+
+
+
+
+                                    setTimeout("loadprintPage();", 3000);
+                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 3200);
                                 } else {
                                     sm_warning("Not Submited , Please Try again");
                                 }
@@ -394,104 +405,23 @@
     }
 
 
+    function loadprintPage() {
+
+        var windowName = 'Invoice';
+        var popUp = window.open('Invoice?action=PrintLastInvoice', windowName, 'width=1000, height=700, left=24, top=24, scrollbars, resizable');
+        if (popUp == null || typeof (popUp) == 'undefined') {
+            alert('Please disable your pop-up blocker and print invoice again.');
+        } else {
+            popUp.focus();
+        }
+    }
 
 
-
-
-
-//
-//    function SaveInvoice() {
-//
-//        var data = {};
-//        var width = document.getElementById('width').value;
-//
-//        var vlong = document.getElementById('vlong').value;
-//        var height = document.getElementById('height').value;
-//        var vno = document.getElementById('vno').value;
-//        var reached = document.getElementById('reached').value;
-//        var loaded = document.getElementById('loaded').value;
-//        var name = document.getElementById('name').value;
-//        var supervisor = document.getElementById('supervisor').value;
-//        var security = document.getElementById('security').value;
-//        var customer = document.getElementById('customer').value;
-//        var total = document.getElementById('total').innerHTML;
-//        var chequeNo = document.getElementById('chequeNo').value;
-//        var bankName = document.getElementById('bankName').value;
-//        var chequeDate = document.getElementById('chequeDate').value;
-//        var payment = document.getElementById('payment').value;
-//        if (payment === "") {
-//            payment = "0";
-//        }
-//        var outstanding = document.getElementById('ost').innerHTML;
-//        var pt = 0;
-//        var ptype = document.getElementById("cash");
-//        if (ptype.checked) {
-//            pt = 1;
-//        }
-//        data["vno"] = vno;
-//        data["width"] = width;
-//        data["vlong"] = vlong;
-//        data["height"] = height;
-//        data["reached"] = reached;
-//        data["loaded"] = loaded;
-//        data["name"] = name;
-//        data["supervisor"] = supervisor;
-//        data["security"] = security;
-//        data["customer"] = customer;
-//        data["total"] = total;
-//        data["chequeNo"] = chequeNo;
-//        data["bankName"] = bankName;
-//        data["chequeDate"] = chequeDate;
-//        data["payment"] = payment;
-//        data["outstanding"] = outstanding;
-//        data["payType"] = pt;
-//
-//        data["items"] = item_details;
-//        var jsonDetails = JSON.stringify(data);
-//
-//        console.log();
-//
-//        BootstrapDialog.show({
-//            message: 'Do you want to Submit ?',
-//            closable: false,
-//            buttons: [{
-//                    label: 'Yes',
-//                    action: function (dialogRef) {
-//                        dialogRef.close();
-//                        $.ajax({
-//                            type: "POST",
-//                            url: "Invoice?action=SubmitInvoice&data=" + jsonDetails,
-//                            success: function (msg) {
-//                                if (msg === "Success") {
-//                                    nom_Success("Successfully  Added");
-//
-//                                    setTimeout("window.open('Invoice?action=PrintLastInvoice','_blank');", 500);
-//
-//                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 1000);
-//                                } else {
-//                                    sm_warning("Not Submited , Please Try again");
-//                                }
-//                            }
-//
-//                        });
-//
-//                    }
-//                }, {
-//                    label: 'No',
-//                    action: function (dialogRef) {
-//                        dialogRef.close();
-//                    }
-//                }]
-//        });
-//    }
-//
-
-    /**/
 
 
 </script>
 
-<div class="">
+<div>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -594,7 +524,7 @@
                             </div>
                         </div>
                         <div id="cubesqty" class="item form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Stone Quantity</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Stone Quantity (Cubic feet)</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input class="form-control col-md-7 col-xs-12" data-validate-words="1" name="qty" id="qty" placeholder="Enter Quantity" required="required" type="number">
                             </div>
@@ -617,7 +547,7 @@
                         <thead>
                             <tr>
                                 <th>Stone Category</th>
-                                <th>Cubes</th>
+                                <th>Cubic feets</th>
                                 <th>Price</th>
                                 <th>Transport</th>
                                 <th>Total</th>

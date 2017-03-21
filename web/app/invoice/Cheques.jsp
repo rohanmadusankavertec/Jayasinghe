@@ -163,7 +163,9 @@
                                     <td class=" "><%=c.getChequeNo()%></td>
                                     <td class=" "><%=c.getChequeDate()%></td>
                                     <td class=" "><%=c.getAmount()%></td>
-                                    <td class=" "><%=c.getInvoiceInfoId().getCustomerId().getName() %></td>
+                                    <%if(c.getInvoiceInfoId().getCustomerId()!= null){%>
+                                        <td class=" "><%=c.getInvoiceInfoId().getCustomerId().getName() %></td>
+                                    <%}%>
                                     <td class="last"> 
                                         <span class="btn btn-default glyphicon glyphicon-ok text-center" onclick="ClearCheque(<%=c.getId()%>)"></span>
                                         <span class="btn btn-default glyphicon glyphicon-remove text-center" onclick="DeletePayment(<%=c.getId()%>)"></span>

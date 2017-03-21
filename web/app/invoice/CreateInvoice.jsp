@@ -69,9 +69,10 @@
 
 
     }
-    setTimeout("timeNow();",100);
+    setTimeout("timeNow();",1000);
     
     function timeNow() {
+        window.history.forward(-1);
         var d = new Date(), h = (d.getHours() < 10 ? '0' : '') + d.getHours(), m = (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
         document.getElementById('Reached').value = h + ":" + m;
         document.getElementById('Loaded').value = h + ":" + m;
@@ -187,7 +188,7 @@
                     <div class="clearfix"></div>
                     <div class="item form-group" style="margin-top: 10px;">
 
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Number</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Number<span>*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input class="form-control col-md-7 col-xs-12" onkeyup="getVehicle()" onblur="getVehicle()" data-validate-words="1" id="vehicleNo" name="vehicleNo" placeholder="Enter Vehicle Number" required="required" type="text"/>
 
@@ -197,23 +198,23 @@
                     <div class="clearfix">
                         <div class="clearfix"></div>
                         <div id="width2" class="item form-group" style="margin-top: 10px;">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Width (inches)<span >*</span></label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="text"/>
+                                <input class="form-control col-md-7 col-xs-12" id="width" name="width" placeholder="Enter Vehicle Width"  type="number"/>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <div id="height2" class="item form-group"  style="margin-top: 10px;">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Height (inches)<span>*</span></label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="text"/>
+                                <input class="form-control col-md-7 col-xs-12" id="height" name="height" placeholder="Enter Vehicle Height" type="number"/>
                             </div>
                         </div>
                         <div class="clearfix"></div>
                         <div id="depth2" class="item form-group" style="margin-top: 10px;">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle depth (inches)</label>
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Vehicle Long (inches)<span>*</span></label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="text"/>
+                                <input class="form-control col-md-7 col-xs-12" id="long" name="long" placeholder="Enter Vehicle Long" type="number"/>
                             </div>
                         </div>
 <!--                        <div class="clearfix"></div>

@@ -172,9 +172,9 @@ public class InvoiceDAOImpl {
 
         if (session != null) {
             try {
-                Query query = session.createQuery("SELECT MAX(i.id) FROM InvoiceInfo i");
+                Query query = session.createQuery("SELECT i.id FROM InvoiceInfo i order by id desc");
+                query.setMaxResults(1);
                 Integer iid = (Integer) query.uniqueResult();
-                System.out.println("IDDDDDDDDDDDDDDDDDDDDDDDDDDDDD "+iid);
                 return iid;
 
             } catch (Exception e) {
