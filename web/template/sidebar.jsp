@@ -81,7 +81,7 @@
                              <li><a href="${context}/Report?action=SearchDailySales">Daily Sales</a></li>
                              <%}%>
                              <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
-                             <li><a href="${context}/Report?action=SearchDailyCollection">Daily Collection</a></li>
+                             <li><a href="${context}/Report?action=CreditorPurchaseHistory">Creditor Purchase History</a></li>
                              <%}%>
                              <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
                              <li><a href="${context}/Report?action=SearchDailySummery">Daily Summery</a></li>

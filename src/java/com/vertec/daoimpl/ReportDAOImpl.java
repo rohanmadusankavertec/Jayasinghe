@@ -37,7 +37,7 @@ public class ReportDAOImpl {
                     ex.printStackTrace();
                 }
 
-                Query query = session.createSQLQuery("SELECT c.name,SUM(i.cubes),c.price,SUM(i.transport) FROM invoice i INNER JOIN invoice_info ii ON i.invoice_info_id=ii.id INNER JOIN category c ON c.id=i.category_id WHERE ii.is_valid=:isValid AND ii.date BETWEEN :from AND :to ORDER BY i.category_id");
+                Query query = session.createSQLQuery("SELECT c.name,SUM(i.cubes),c.price,SUM(i.transport) FROM invoice i INNER JOIN invoice_info ii ON i.invoice_info_id=ii.id INNER JOIN category c ON c.id=i.category_id WHERE ii.is_valid=:isValid AND c.is_valid=:isValid AND ii.date BETWEEN :from AND :to ORDER BY i.category_id");
                 query.setParameter("isValid", true);
                 query.setParameter("from", fromDate);
                 query.setParameter("to", toDate);
@@ -61,7 +61,7 @@ public class ReportDAOImpl {
     
     
     
-    public List<Object[]> getDailyCollection(String From, String To) {
+    public List<Object[]> getDailyCollection(String From, String To, int cus) {
         System.out.println("callint methord.........");
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -80,7 +80,17 @@ public class ReportDAOImpl {
                 }
                 System.out.println("callint methord........."+fromDate);
                 System.out.println("callint methord........."+toDate);
-                Query query = session.createSQLQuery("SELECT c.name,ii.total,ii.outstanding FROM invoice_info ii INNER JOIN customer c ON c.id=ii.customer_id INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date BETWEEN :from AND :to GROUP BY ii.id");
+                
+                String sql="SELECT c.name,ii.total,ii.outstanding FROM invoice_info ii INNER JOIN customer c ON c.id=ii.customer_id INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND ii.date BETWEEN :from AND :to GROUP BY ii.id";
+                
+                
+                if(cus!=0){
+                sql="SELECT c.name,ii.total,ii.outstanding FROM invoice_info ii INNER JOIN customer c ON c.id=ii.customer_id INNER JOIN payment p ON p.invoice_info_id=ii.id WHERE ii.is_valid=:isValid AND p.is_valid=:isValid AND c.id='"+cus+"' AND ii.date BETWEEN :from AND :to GROUP BY ii.id";
+                }
+                
+                
+                
+                Query query = session.createSQLQuery(sql);
                 query.setParameter("isValid", true);
                 query.setParameter("from", fromDate);
                 query.setParameter("to", toDate);

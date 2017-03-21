@@ -385,6 +385,7 @@
 
 
                                     setTimeout("loadprintPage();", 3000);
+//                                    setTimeout("loadOtherPage();", 3000);
                                     setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 3200);
                                 } else {
                                     sm_warning("Not Submited , Please Try again");
@@ -418,7 +419,6 @@
 
 
 
-
 </script>
 
 <div>
@@ -447,7 +447,6 @@
                                 <input type="hidden" value="<%=vehicleNo%>" id="vno"/>
                                 <!--<input type="hidden" value="<>" id="lqty"/>-->
                                 <input type="hidden" value="<%=loadType%>" id="ltype"/>
-
 
                                 <input type="hidden" value="<%=width%>" id="width"/>
                                 <input type="hidden" value="<%=vlong%>" id="vlong"/>
@@ -615,11 +614,11 @@
                                     </tr>
                                     <tr>
                                         <th>Outstanding:</th>
-                                        <td><span id="ost">0000.00</span>LKR</td>
+                                        <td><span id="ost">0000.00</span> LKR</td>
                                     </tr>
                                     <tr>
                                         <th>Balance</th>
-                                        <td><span id="bal">0000.00</span>LKR</td>
+                                        <td><span id="bal">0000.00</span> LKR</td>
                                     </tr>
                                 </tbody>
                             </table>

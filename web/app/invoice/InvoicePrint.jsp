@@ -49,7 +49,7 @@
             }
         </script>
 
-
+        
     </head>
     <body onload="printthis();">
 
@@ -75,7 +75,7 @@
 
 
     <center>
-        <h2>JAYASINGHE CONSTRUCTION PVT (LTD).</h2>
+        <h2>JAYASINGHE CONSTRUCTION (PVT)LTD.</h2>
 
         <table style="border: 1px solid #000;">
             <tr>
@@ -282,19 +282,11 @@
                             </tr>
                         </table>
 
-
-
-
                     </td>
                 </tr>
             </table>    
 
-
-
         </div>
-
-
-
 
     </center>
 

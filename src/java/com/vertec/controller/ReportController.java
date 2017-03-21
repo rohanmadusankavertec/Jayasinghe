@@ -5,7 +5,9 @@
  */
 package com.vertec.controller;
 
+import com.vertec.daoimpl.RegistrationDAOImpl;
 import com.vertec.daoimpl.ReportDAOImpl;
+import com.vertec.hibe.model.Customer;
 import com.vertec.hibe.model.InvoiceInfo;
 import com.vertec.hibe.model.SysUser;
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class ReportController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private final ReportDAOImpl reportdao = new ReportDAOImpl();
+    private final RegistrationDAOImpl registrationdao = new RegistrationDAOImpl();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -64,16 +67,19 @@ public class ReportController extends HttpServlet {
                     break;
                 }
                 //Open Search daily collection Page
-                case "SearchDailyCollection": {
+                case "CreditorPurchaseHistory": {
+                    List<Customer> customer = registrationdao.getListOfCustomer();
+                    request.setAttribute("customer", customer);
                     requestDispatcher = request.getRequestDispatcher("app/report/SearchDailyCollection.jsp");
                     requestDispatcher.forward(request, response);
                     break;
                 }
                 //Open Daily Collection Page
-                case "DailyCollection": {
+                case "cphistory": {
                     String from = request.getParameter("from").trim();
                     String to = request.getParameter("to").trim();
-                    List<Object[]> list=reportdao.getDailyCollection(from, to);
+                    String customer = request.getParameter("customer").trim();
+                    List<Object[]> list=reportdao.getDailyCollection(from, to,Integer.parseInt(customer));
                     request.setAttribute("dailycollection", list);
                     requestDispatcher = request.getRequestDispatcher("app/report/DailyCollection.jsp");
                     requestDispatcher.forward(request, response);

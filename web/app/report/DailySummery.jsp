@@ -216,17 +216,17 @@
                     <table>
                         <tr>
                             <td><strong>Total Sales</strong></td>
-                            <td style="width: 100px;">:</td>
+                            <td style="width: 100px;"></td>
                             <td><strong><%= (total1+total2) %></strong></td>
                         </tr>
                         <tr>
                             <td><strong>Total Paid</strong></td>
-                            <td>:</td>
+                            <td></td>
                             <td><strong><%=(paid1+paid2)%></strong></td>
                         </tr>
                         <tr>
                             <td><strong>Total Outstanding</strong></td>
-                            <td>:</td>
+                            <td></td>
                             <td><strong><%=(outstanding1+outstanding2)%></strong></td>
                         </tr>
                     </table>

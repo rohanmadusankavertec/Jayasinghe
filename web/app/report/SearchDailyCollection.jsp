@@ -7,9 +7,13 @@
 --%>
 
 
+<%@page import="com.vertec.hibe.model.Customer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="../../template/header.jsp"%>
 <%@include file="../../template/sidebar.jsp"%>
+<%
+    List<Customer> customer = (List<Customer>) request.getAttribute("customer");
+%>
 <div class="">
     <div class="clearfix"></div>
     <div class="row">
@@ -29,8 +33,22 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <form action="Report?action=DailyCollection" method="post" class="form-horizontal form-label-left" validate>
-                        <span class="section">Search Daily Collection</span>
+                    <form action="Report?action=cphistory" method="post" class="form-horizontal form-label-left" validate>
+                        <span class="section">Search Creditors' Purchase History</span>
+                        <div class="item form-group">
+                        <label for="Privilege" class="control-label col-md-3 col-sm-3 col-xs-12">Customer</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="customer" id="customer">
+                                <option value="0" selected="true">Select Customer</option>
+                                <%                                        for (Customer c : customer) {
+                                %>
+                                <option value="<%=c.getId()%>"><%=c.getName()%></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    </div>
                         <div class="item form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">From Date
                             </label>
