@@ -165,6 +165,8 @@
                                     <td class=" "><%=c.getAmount()%></td>
                                     <%if(c.getInvoiceInfoId().getCustomerId()!= null){%>
                                         <td class=" "><%=c.getInvoiceInfoId().getCustomerId().getName() %></td>
+                                    <%}else{%>
+                                    <td></td>
                                     <%}%>
                                     <td class="last"> 
                                         <span class="btn btn-default glyphicon glyphicon-ok text-center" onclick="ClearCheque(<%=c.getId()%>)"></span>

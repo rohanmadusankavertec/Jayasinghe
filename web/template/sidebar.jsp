@@ -83,6 +83,9 @@
                              <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
                              <li><a href="${context}/Report?action=SearchDailyCollection">Daily Collection</a></li>
                              <%}%>
+                             <%if (ca.checkUserAuth("DAILY_COLLECTION", group) != null) {%>
+                             <li><a href="${context}/Report?action=SearchDailySummery">Daily Summery</a></li>
+                             <%}%>
                         </ul>
                     </li>
                     <li><a><i class="fa fa-user-secret"></i>User Management<span class="fa fa-chevron-down"></span></a>
