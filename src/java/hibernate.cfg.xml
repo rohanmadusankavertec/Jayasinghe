@@ -4,9 +4,9 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://mysql146881-jayasinghecon.j.layershift.co.uk:3306/jayasinghe</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/jayasinghe</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">ICKlbb83876</property>
+    <property name="hibernate.connection.password">123</property>
     <mapping class="com.vertec.hibe.model.Category"/>
     <mapping class="com.vertec.hibe.model.Customer"/>
     <mapping class="com.vertec.hibe.model.Invoice"/>

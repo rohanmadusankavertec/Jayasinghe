@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date")})
 public class Payment implements Serializable {
 
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @ManyToOne
+    private Customer customerId;
+
     @Column(name = "crn")
     private String crn;
 
@@ -204,6 +208,14 @@ public class Payment implements Serializable {
 
     public void setCrn(String crn) {
         this.crn = crn;
+    }
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Customer customerId) {
+        this.customerId = customerId;
     }
 
     

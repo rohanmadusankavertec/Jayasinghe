@@ -50,6 +50,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "InvoiceInfo.findByReceiver", query = "SELECT i FROM InvoiceInfo i WHERE i.receiver = :receiver")})
 public class InvoiceInfo implements Serializable {
 
+    @OneToMany(mappedBy = "invoiceInfoId")
+    private Collection<Payment> paymentCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -264,6 +267,15 @@ public class InvoiceInfo implements Serializable {
     @Override
     public String toString() {
         return "com.vertec.hibe.model.InvoiceInfo[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Payment> getPaymentCollection() {
+        return paymentCollection;
+    }
+
+    public void setPaymentCollection(Collection<Payment> paymentCollection) {
+        this.paymentCollection = paymentCollection;
     }
     
 }

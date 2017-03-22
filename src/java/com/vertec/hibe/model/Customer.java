@@ -40,6 +40,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customer.findByIsValid", query = "SELECT c FROM Customer c WHERE c.isValid = :isValid")})
 public class Customer implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "balance")
+    private Double balance;
+    @OneToMany(mappedBy = "customerId")
+    private Collection<Payment> paymentCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
     private Collection<InvoiceInfo> invoiceInfoCollection;
 
@@ -158,6 +164,23 @@ public class Customer implements Serializable {
 
     public void setInvoiceInfoCollection(Collection<InvoiceInfo> invoiceInfoCollection) {
         this.invoiceInfoCollection = invoiceInfoCollection;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    @XmlTransient
+    public Collection<Payment> getPaymentCollection() {
+        return paymentCollection;
+    }
+
+    public void setPaymentCollection(Collection<Payment> paymentCollection) {
+        this.paymentCollection = paymentCollection;
     }
     
 }
