@@ -24,7 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author vertec-r
+ * @author Rohan Madusanka @Contact 071 - 9085504 @E-mail
+ * rohanmadusanka72@gmail.com
  */
 @Entity
 @Table(name = "payment")
@@ -38,17 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Payment.findByChequeNo", query = "SELECT p FROM Payment p WHERE p.chequeNo = :chequeNo"),
     @NamedQuery(name = "Payment.findByBank", query = "SELECT p FROM Payment p WHERE p.bank = :bank"),
     @NamedQuery(name = "Payment.findByChequeDate", query = "SELECT p FROM Payment p WHERE p.chequeDate = :chequeDate"),
-    @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date")})
+    @NamedQuery(name = "Payment.findByDate", query = "SELECT p FROM Payment p WHERE p.date = :date"),
+    @NamedQuery(name = "Payment.findByCrn", query = "SELECT p FROM Payment p WHERE p.crn = :crn")})
 public class Payment implements Serializable {
 
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @ManyToOne
-    private Customer customerId;
-
-    @Column(name = "crn")
-    private String crn;
-
-    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,8 +66,13 @@ public class Payment implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    @Column(name = "crn")
+    private String crn;
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @ManyToOne
+    private Customer customerId;
     @JoinColumn(name = "invoice_info_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private InvoiceInfo invoiceInfoId;
     @JoinColumn(name = "payment_type_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -153,6 +152,22 @@ public class Payment implements Serializable {
         this.date = date;
     }
 
+    public String getCrn() {
+        return crn;
+    }
+
+    public void setCrn(String crn) {
+        this.crn = crn;
+    }
+
+    public Customer getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Customer customerId) {
+        this.customerId = customerId;
+    }
+
     public InvoiceInfo getInvoiceInfoId() {
         return invoiceInfoId;
     }
@@ -201,22 +216,5 @@ public class Payment implements Serializable {
     public String toString() {
         return "com.vertec.hibe.model.Payment[ id=" + id + " ]";
     }
-
-    public String getCrn() {
-        return crn;
-    }
-
-    public void setCrn(String crn) {
-        this.crn = crn;
-    }
-
-    public Customer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
-    }
-
     
 }
