@@ -28,9 +28,7 @@ public class RegistrationDAOImpl {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-
         if (session != null) {
-
             try {
                 session.save(service);
                 session.flush();
@@ -48,9 +46,7 @@ public class RegistrationDAOImpl {
                 }
             }
         }
-
         return null;
-
     }
 
     public List<Category> getListOfCategory() {
@@ -197,7 +193,7 @@ public class RegistrationDAOImpl {
 
         if (session != null) {
             try {
-                Query query = session.createQuery("SELECT c FROM Customer c WHERE c.isValid=:isValid");
+                Query query = session.createQuery("SELECT c FROM Customer c WHERE c.isValid=:isValid ORDER BY c.name ASC");
                 query.setParameter("isValid", true);
                 List<Customer> csList = query.list();
 
@@ -576,4 +572,56 @@ public class RegistrationDAOImpl {
     }
 
 //    Category Methods End
+    
+    
+    
+    
+    
+    
+    
+    public String CustomerDeposit(Customer c,double amount) {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("Update Customer c set c.balance=c.balance+:amount where c.id=:customer");
+                query.setParameter("amount", amount);
+                query.setParameter("customer", c.getId());
+                query.executeUpdate();
+                transaction.commit();
+                return VertecConstants.UPDATED;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return VertecConstants.ERROR;
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return null;
+    }
+    
+     public String CustomerWithdraw(Customer c,double amount) {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("Update Customer c set c.balance=c.balance-:amount where c.id=:customer");
+                query.setParameter("amount", amount);
+                query.setParameter("customer", c.getId());
+                query.executeUpdate();
+                transaction.commit();
+                return VertecConstants.UPDATED;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return VertecConstants.ERROR;
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return null;
+    }
 }

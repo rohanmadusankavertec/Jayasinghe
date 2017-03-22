@@ -106,6 +106,7 @@
                                     <th>Address</th>
                                     <th>Contact No</th>
                                     <th>E-mail</th>
+                                    <th>Balance</th>
                                     <th class=" no-link last"><span class="nobr">Update</span>
                                     <th class=" no-link last"><span class="nobr">Delete</span>
                                     </th>
@@ -121,6 +122,7 @@
                                     <td class=" "><%=c.getAddress()%></td>
                                     <td class=" "><%=c.getContactNo()%></td>
                                     <td class=" "><%=c.getEmail()%></td>
+                                    <td class=" "><%=c.getBalance()%></td>
                                     <td class=" last"> 
                                         <form name="form1" method="post" action="Registration?action=UpdateCustomer"><input type="hidden" name="customerId" value="<%=c.getId()%>"/>
                                             <button type="submit" class="glyphicon glyphicon-edit">

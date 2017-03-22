@@ -5,7 +5,7 @@
  */
 package com.vertec.daoimpl;
 
-
+import com.vertec.hibe.model.Customer;
 import com.vertec.hibe.model.Invoice;
 import com.vertec.hibe.model.InvoiceInfo;
 import com.vertec.hibe.model.Payment;
@@ -23,7 +23,8 @@ import org.hibernate.Transaction;
  * @author vertec-r
  */
 public class InvoiceDAOImpl {
-   public String saveInvoice(InvoiceInfo invoice) {
+
+    public String saveInvoice(InvoiceInfo invoice) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
@@ -51,7 +52,8 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   public String savePayment(Payment payment) {
+
+    public String savePayment(Payment payment) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -71,7 +73,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   public String savePaymentType(PaymentType payment) {
+
+    public String savePaymentType(PaymentType payment) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -91,9 +94,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   
-   
-   public List<InvoiceInfo> getListOfInvoiceInfo() {
+
+    public List<InvoiceInfo> getListOfInvoiceInfo() {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -102,7 +104,7 @@ public class InvoiceDAOImpl {
                 Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid ORDER BY i.id DESC");
                 query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
-                
+
                 return inList;
 
             } catch (Exception e) {
@@ -117,7 +119,8 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   public List<Payment> getListOfCheques() {
+
+    public List<Payment> getListOfCheques() {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -126,7 +129,7 @@ public class InvoiceDAOImpl {
                 Query query = session.createQuery("SELECT p FROM Payment p WHERE p.isValid=:isValid");
                 query.setParameter("isValid", false);
                 List<Payment> inList = query.list();
-                
+
                 return inList;
 
             } catch (Exception e) {
@@ -141,8 +144,8 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   
-   public List<Invoice> getInvoiceById(int id) {
+
+    public List<Invoice> getInvoiceById(int id) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -165,8 +168,8 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   
-   public int getLastInvoice() {
+
+    public int getLastInvoice() {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -188,7 +191,8 @@ public class InvoiceDAOImpl {
         return 0;
 
     }
-      public InvoiceInfo getInvoiceInfoById(int id) {
+
+    public InvoiceInfo getInvoiceInfoById(int id) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -211,18 +215,18 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   
-   public Payment getPaymentById(int id) {
+
+    public Payment getPaymentById(int id) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
         if (session != null) {
             try {
-                
+
                 Query query = session.getNamedQuery("Payment.findById");
                 query.setParameter("id", id);
                 Payment inList = (Payment) query.uniqueResult();
-                
+
                 return inList;
 
             } catch (Exception e) {
@@ -237,18 +241,18 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   
-   public List<InvoiceInfo> getListOfOutstandingInvoiceInfo() {
+
+    public List<InvoiceInfo> getListOfOutstandingInvoiceInfo() {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
         if (session != null) {
             try {
-                
+
                 Query query = session.createQuery("SELECT i FROM InvoiceInfo i WHERE i.isValid=:isValid AND i.outstanding>0 ");
                 query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
-                
+
                 return inList;
 
             } catch (Exception e) {
@@ -263,8 +267,8 @@ public class InvoiceDAOImpl {
         return null;
 
     }
-   
-   public String DeleteInvoice(String id) {
+
+    public String DeleteInvoice(String id) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -286,9 +290,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   
-   
-   public String UpdateInvoice(Payment p) {
+
+    public String UpdateInvoice(Payment p) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -310,7 +313,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   public String ClearCheque(String id) {
+
+    public String ClearCheque(String id) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -320,6 +324,14 @@ public class InvoiceDAOImpl {
                 query.setParameter("isValid", true);
                 query.executeUpdate();
                 transaction.commit();
+                Payment p = new InvoiceDAOImpl().getPaymentById(Integer.parseInt(id));
+                if((p.getCustomerId()!=null) |(p.getInvoiceInfoId().getCustomerId()!=null) ){
+                    if(p.getCustomerId()!=null){
+                    UpdateCustomersOutstanding(p.getCustomerId(), p.getAmount());
+                    }else if(p.getInvoiceInfoId().getCustomerId()!=null){
+                    UpdateCustomersOutstanding(p.getInvoiceInfoId().getCustomerId(), p.getAmount());
+                    }
+                }
                 return VertecConstants.SUCCESS;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -332,7 +344,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   public String DeletePayment(String id) {
+
+    public String DeletePayment(String id) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -353,7 +366,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   public String UpdateOutstanding(double payment,int id) {
+
+    public String UpdateOutstanding(double payment, int id) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -375,8 +389,8 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-  
-   public List<Object[]> loadPaymentData(int coId) {
+
+    public List<Object[]> loadPaymentData(int coId) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
@@ -399,17 +413,18 @@ public class InvoiceDAOImpl {
         }
         return null;
     }
-   public String getVehicle(String id) {
+
+    public String getVehicle(String id) {
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         if (session != null) {
             try {
                 Query query = session.createQuery("Select i from InvoiceInfo i where i.vehicleNo=:vno");
                 query.setParameter("vno", id);
                 query.setMaxResults(1);
-                
+
                 InvoiceInfo invoice = (InvoiceInfo) query.uniqueResult();
-                if(invoice!=null){
-                return invoice.getVWidth()+"~"+invoice.getVHeight()+"~"+invoice.getVLong();
+                if (invoice != null) {
+                    return invoice.getVWidth() + "~" + invoice.getVHeight() + "~" + invoice.getVLong();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -421,24 +436,25 @@ public class InvoiceDAOImpl {
         }
         return "";
     }
-   public List<Payment> getListOfPayments(int id) {
+
+    public List<Payment> getListOfPayments(int id) {
 
         Session session = NewHibernateUtil.getSessionFactory().openSession();
 
         if (session != null) {
             try {
-                String hql="SELECT p FROM Payment p WHERE p.isValid=:isvalid";
-                if(id!=0){
-                hql+=" AND p.invoiceInfoId.customerId.id=:id";
+                String hql = "SELECT p FROM Payment p WHERE p.isValid=:isvalid";
+                if (id != 0) {
+                    hql += " AND p.invoiceInfoId.customerId.id=:id";
                 }
-                
+
                 Query query = session.createQuery(hql);
-                if(id!=0){
-                query.setParameter("id", id);
+                if (id != 0) {
+                    query.setParameter("id", id);
                 }
                 query.setParameter("isvalid", true);
                 List<Payment> inList = query.list();
-                
+
                 return inList;
 
             } catch (Exception e) {
@@ -453,4 +469,57 @@ public class InvoiceDAOImpl {
         return null;
 
     }
+
+    public String UpdateCustomersOutstanding(Customer cus, double payment) {
+
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("SELECT ii FROM InvoiceInfo ii WHERE ii.customerId=:customer AND ii.outstanding>0 AND ii.isValid=isValid");
+                query.setParameter("customer", cus);
+                query.setParameter("isvalid", true);
+                List<InvoiceInfo> inList = query.list();
+                for (InvoiceInfo ii : inList) {
+                    double toPay=ii.getOutstanding();
+                    
+                    Query query2 = session.createQuery("Update InvoiceInfo i set i.outstanding=:amount where i.id=:Id");
+                    query2.setParameter("Id", ii.getId());
+                    query2.setParameter("amount", payment);
+                    
+                    if(toPay==payment){
+                    query2.setParameter("amount", payment);
+                    payment=0;
+                    }else if(toPay<payment){
+                    query2.setParameter("amount", toPay);
+                    payment-=toPay;
+                    }else{
+                    query2.setParameter("amount", (toPay-payment));
+                    payment=0;
+                    }
+                    
+                    
+                    if(payment>0){
+                    new RegistrationDAOImpl().CustomerDeposit(cus, payment);
+                    
+                    }
+                    
+                    
+                    query2.executeUpdate();
+                    transaction.commit();
+                }
+                return VertecConstants.SUCCESS;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+
+        return null;
+    }
+
 }

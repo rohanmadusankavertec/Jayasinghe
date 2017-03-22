@@ -117,30 +117,46 @@
         }
     }
     // View outstanding and balance
+    
+    var invoicetotal=0;
+    var outstandingtotal=0;
+    
+    
     function outstanding() {
-        var total = document.getElementById('total').innerHTML;
+        var total = invoicetotal;
         var payment = document.getElementById('payment').value;
         if (payment === "") {
             payment = 0;
-            document.getElementById("ost").innerHTML = total;
+            outstandingtotal=total;
+            document.getElementById("ost").innerHTML = total.format(2, 3);
             document.getElementById("bal").innerHTML = "00.00";
         } else {
             var deff = parseFloat(total) - parseFloat(payment);
             if (deff > 0) {
-                document.getElementById("ost").innerHTML = deff;
+                outstandingtotal=deff;
+                document.getElementById("ost").innerHTML = deff.format(2, 3);
                 document.getElementById("bal").innerHTML = "00.00";
             } else if (deff < 0) {
                 document.getElementById("ost").innerHTML = "00.00";
-                document.getElementById("bal").innerHTML = deff * (-1);
+                document.getElementById("bal").innerHTML = (deff * (-1)).format(2, 3);
             } else if (deff === 0) {
                 document.getElementById("ost").innerHTML = "00.00";
                 document.getElementById("bal").innerHTML = "00.00";
             } else {
-                document.getElementById("ost").innerHTML = total;
+                outstandingtotal=total;
+                document.getElementById("ost").innerHTML = total.format(2, 3);
                 document.getElementById("bal").innerHTML = "00.00";
             }
         }
     }
+    
+    
+    Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+    
+    
     var item_details = {};
     function addtogrid() {
 
@@ -243,8 +259,9 @@
             row.appendChild(col5);
             row.appendChild(col6);
             invoiceItemTable.appendChild(row);
-            var currenttot = document.getElementById("total").innerHTML;
-            document.getElementById("total").innerHTML = parseFloat(currenttot) + parseFloat(total);
+            var currenttot = invoicetotal;
+            invoicetotal=parseFloat(currenttot) + parseFloat(total);
+            document.getElementById("total").innerHTML = invoicetotal.format(2, 3);
             outstanding();
             document.getElementById("qty").value = "";
             document.getElementById("transport").value = "";
@@ -259,8 +276,9 @@
             var tr = $(this).closest('tr');
             var gross = tr.find('td:nth-child(5)').text();
             var qty = tr.find('td:nth-child(2)').text();
-            var currenttot = document.getElementById("total").innerHTML;
-            document.getElementById("total").innerHTML = parseFloat(currenttot) - parseFloat(gross);
+            var currenttot = invoicetotal;
+            invoicetotal=parseFloat(currenttot) - parseFloat(gross);
+            document.getElementById("total").innerHTML = invoicetotal;
             outstanding();
             var cqty = parseFloat(document.getElementById("invoicespace").innerHTML);
             var totqty = cqty - parseFloat(qty);
@@ -275,6 +293,7 @@
 
         }
     });
+    
     function sm_alert(text) {
         BootstrapDialog.alert({
             title: 'Alert',
@@ -328,7 +347,7 @@
         var supervisor = document.getElementById('supervisor').value;
         var security = document.getElementById('security').value;
         var customer = document.getElementById('customer').value;
-        var total = document.getElementById('total').innerHTML;
+        var total = invoicetotal;
         var chequeNo = document.getElementById('chequeNo').value;
         var bankName = document.getElementById('bankName').value;
         var chequeDate = document.getElementById('chequeDate').value;
@@ -336,7 +355,7 @@
         if (payment === "") {
             payment = "0";
         }
-        var outstanding = document.getElementById('ost').innerHTML;
+        var outstanding = outstandingtotal;
         var pt = 0;
         var ptype = document.getElementById("cash");
         if (ptype.checked) {
@@ -380,13 +399,9 @@
                                 if (msg === "Success") {
                                     nom_Success("Successfully  Added");
 
-
-
-
-
-                                    setTimeout("loadprintPage();", 3000);
+                                    setTimeout("loadprintPage();", 5000);
 //                                    setTimeout("loadOtherPage();", 3000);
-                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 3200);
+                                    setTimeout("location.href = 'Invoice?action=ToCreateInvoice';", 5200);
                                 } else {
                                     sm_warning("Not Submited , Please Try again");
                                 }
@@ -583,7 +598,7 @@
                                     %>
                                     <tr>
                                         <th style="width:50%">Total</th>
-                                        <td ><span id="total">0000.00</span> LKR</td>
+                                        <td >Rs: <span id="total">0000.00</span> </td>
                                     </tr>
                                     <tr>
                                         <th>Payment Type:</th>
@@ -614,11 +629,11 @@
                                     </tr>
                                     <tr>
                                         <th>Outstanding:</th>
-                                        <td><span id="ost">0000.00</span> LKR</td>
+                                        <td>Rs: <span id="ost">0000.00</span> </td>
                                     </tr>
                                     <tr>
                                         <th>Balance</th>
-                                        <td><span id="bal">0000.00</span> LKR</td>
+                                        <td>Rs: <span id="bal">0000.00</span></td>
                                     </tr>
                                 </tbody>
                             </table>

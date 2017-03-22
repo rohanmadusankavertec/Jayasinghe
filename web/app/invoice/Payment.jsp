@@ -6,6 +6,7 @@
  *
 --%>
 
+<%@page import="com.vertec.hibe.model.Customer"%>
 <%@page import="com.vertec.hibe.model.InvoiceInfo"%>
 <%@page import="org.hibernate.SQLQuery"%>
 <%@page import="org.hibernate.Session"%>
@@ -98,6 +99,18 @@
 
 // Save payment details
     function SavePayment() {
+        var pay = document.getElementById("payfor").value;
+        if (pay === "1") {
+            SaveCustomerPayment();
+        }else if(pay === "2"){
+            SaveInvoicePayment();
+            
+        }
+    }
+    
+    
+    function SaveInvoicePayment(){
+        
 
         var ino = document.getElementById('ino').value;
         var payType = document.getElementById('payType').value;
@@ -140,13 +153,90 @@
                 }]
         });
 
+        
     }
+    
+    function SaveCustomerPayment(){
+        var cno = document.getElementById('customer').value;
+        var payType = document.getElementById('payType').value;
+        var bank = document.getElementById('bank').value;
+        var chdate = document.getElementById('chdate').value;
+        var chno = document.getElementById('chno').value;
+        var payment = document.getElementById('payment').value;
+        var crn = document.getElementById('crn').value;
+
+        BootstrapDialog.show({
+            message: 'Do you want to Save Payment ?',
+            closable: false,
+            buttons: [{
+                    label: 'Yes',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                        var xmlHttp = getAjaxObject();
+                        xmlHttp.onreadystatechange = function ()
+                        {
+                            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+                            {
+                                var reply = xmlHttp.responseText;
+                                if (reply === "Success") {
+                                    nom_Success("Successfully Saved..");
+                                    setTimeout("location.href = 'Invoice?action=ToPayment';", 1500);
+                                } else {
+                                    sm_warning("Payment Not Correctly Entered Please Try Again");
+                                }
+                            }
+                        };
+                        xmlHttp.open("POST", "Invoice?action=SaveCustomerPayment&cno=" + cno + "&payType=" + payType + "&bank=" + bank + "&chdate=" + chdate + "&chno=" + chno + "&payment=" + payment + "&crn=" + crn, true);
+                        xmlHttp.send();
+                    }
+                }, {
+                    label: 'No',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }]
+        });
+    }
+    
+    
+    
+    
+    
 
 
+    function hideFields() {
+        var pay = document.getElementById("payfor").value;
+        if (pay === "1") {
+            document.getElementById('cusfield').className = 'item form-group';
+            document.getElementById('infield').className = 'hidden';
+            
+            document.getElementById('itfields').className = 'hidden';
+            document.getElementById('paidfield').className = 'hidden';
+            document.getElementById('cofield').className = 'hidden';
+            document.getElementById('out2field').className = 'hidden';
+            document.getElementById('balance2field').className = 'hidden';
+            
+            document.getElementById("invoicetotal").innerHTML = "0000.00";
+            document.getElementById("paid").innerHTML = "0000.00";
+            document.getElementById("outs").innerHTML = "0000.00";
+            document.getElementById("balance2").innerHTML = "0000.00";
+            document.getElementById("outs2").innerHTML = "0000.00";
+        } else {
+            document.getElementById('cusfield').className = 'hidden';
+            document.getElementById('infield').className = 'item form-group';
+            
+            document.getElementById('itfields').className = 'item form-group';
+            document.getElementById('paidfield').className = 'item form-group';
+            document.getElementById('cofield').className = 'item form-group';
+            document.getElementById('out2field').className = 'item form-group';
+            document.getElementById('balance2field').className = 'item form-group';
+        }
+    }
 </script>
 <div class="">
     <%
         List<InvoiceInfo> invoiceList = (List<InvoiceInfo>) request.getAttribute("invoice");
+        List<Customer> cusList = (List<Customer>) request.getAttribute("customer");
     %>
     <div class="clearfix"></div>
     <div class="row">
@@ -172,8 +262,36 @@
                             <input type="text" id="crn" name="crn"  class="form-control col-md-7 col-xs-12">
                         </div>
                     </div>  <div class="clearfix"></div>
-                    
+                    <div class="clearfix"></div>
                     <div class="item form-group" style="padding-top: 20px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Payment For <span class="required"></span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="payfor" id="payfor" onchange="hideFields()" required="required" >
+                                <option value="1">Payment for Customer</option>
+                                <option value="2">Payment for Invoice</option>
+                            </select>                              
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="item form-group" id="cusfield" style="padding-top: 20px;">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Customers 
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" name="customer" id="customer"  required="required" onchange="getInfo()">
+                                <option disabled selected>Select Customer</option>
+                                <%
+                                    for (Customer c : cusList) {
+                                %>
+                                <option  value="<%=c.getId()%>"><%=c.getName() + " " + c.getContactNo()%></option>
+                                <%
+                                    }
+                                %>
+                            </select>                              
+                        </div>
+                    </div>
+
+                    <div class="hidden" id="infield" style="padding-top: 20px;">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Invoice 
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -181,37 +299,37 @@
                                 <option disabled selected>Select Invoice</option>
                                 <%
                                     for (InvoiceInfo ii : invoiceList) {
-                                        if(ii.getCustomerId()!=null){
+                                        if (ii.getCustomerId() != null) {
                                 %>
-                                <option  value="<%=ii.getId()%>"><%=ii.getCustomerId().getName()+ " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
+                                <option  value="<%=ii.getId()%>"><%=ii.getCustomerId().getName() + " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
                                 <%
-                                    }else{
-                                    %>
-                                    <option  value="<%=ii.getId()%>"><%=ii.getVehicleNo() + " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
-                                    
-                                    <%
-                                    }
+                                } else {
+                                %>
+                                <option  value="<%=ii.getId()%>"><%=ii.getVehicleNo() + " ~ Total: " + ii.getTotal() + " ~ Outstanding: " + ii.getOutstanding()%></option>
+
+                                <%
+                                        }
                                     }
                                 %>
                             </select>                              
                         </div>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="item form-group" style="padding-top: 20px;">
+                    <div class="hidden" style="padding-top: 20px;" id="itfields">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Invoice Total (LKR)
                         </label>
                         <label class="control-label col-md-6 col-sm-6 col-xs-12" for="name" style="text-align: left;"><span id="invoicetotal">0000.00</span>
                         </label>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="item form-group" style="padding-top: 20px;">
+                    <div class="hidden" style="padding-top: 20px;" id="paidfield">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Paid Amount (LKR)
                         </label>
                         <label class="control-label col-md-6 col-sm-6 col-xs-12" for="name" style="text-align: left;"><span id="paid">0000.00</span>
                         </label>
                     </div> 
                     <div class="clearfix"></div>
-                    <div class="item form-group" style="padding-top: 20px;">
+                    <div class="hidden" style="padding-top: 20px;" id="cofield">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Current Outstanding (LKR)<span class="required"></span>
                         </label>
                         <label class="control-label col-md-6 col-sm-6 col-xs-12" for="name" style="text-align: left;"><span id="outs">0000.00</span>
@@ -260,13 +378,13 @@
                             <input type="text" id="payment" name="payment" required="required" class="form-control col-md-7 col-xs-12" onkeyup="getBalance()">
                         </div>
                     </div>  <div class="clearfix"></div>
-                    <div class="item form-group" style="padding-top: 20px;">
+                    <div class="hidden" style="padding-top: 20px;" id="out2field">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Outstanding (LKR)<span class="required"></span>
                         </label>
                         <label class="control-label col-md-6 col-sm-6 col-xs-12" style="text-align: left;"><span id="outs2">0000.00</span>
                         </label>
                     </div><div class="clearfix"></div>
-                    <div class="item form-group" style="padding-top: 20px;">
+                    <div class="hidden" style="padding-top: 20px;" id="balance2field">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Balance (LKR)<span class="required"></span>
                         </label>
                         <label class="control-label col-md-6 col-sm-6 col-xs-12" style="text-align: left;"><span id="balance2">0000.00</span>

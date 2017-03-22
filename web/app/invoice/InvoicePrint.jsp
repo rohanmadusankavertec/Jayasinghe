@@ -6,6 +6,7 @@
  *
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
@@ -49,7 +50,7 @@
             }
         </script>
 
-        
+
     </head>
     <body onload="printthis();">
 
@@ -70,6 +71,8 @@
                 ii.add(i);
                 tot += ((invoice.getCubes() * invoice.getCategoryId().getPrice()) + invoice.getTransport());
             }
+
+            DecimalFormat dFormat = new DecimalFormat("####,###,###.00");
         %>
 
 
@@ -163,9 +166,9 @@
                     <tr style="text-align: center; height: 15px;">
                         <td><%=invoice.getCategoryId().getName()%></td>
                         <td><%=invoice.getCubes()%></td>
-                        <td><%=invoice.getCategoryId().getPrice()%></td>
-                        <td><%=invoice.getTransport()%></td>
-                        <td><%=((invoice.getCubes() * invoice.getCategoryId().getPrice()) / 100) + invoice.getTransport()%></td>
+                        <td><%=dFormat.format(invoice.getCategoryId().getPrice())%></td>
+                        <td><%=dFormat.format(invoice.getTransport())%></td>
+                        <td><%=dFormat.format(((invoice.getCubes() * invoice.getCategoryId().getPrice()) / 100) + invoice.getTransport())%></td>
                     </tr>
                     <%}%>
                 </table>
@@ -175,7 +178,7 @@
             <table style="border: 1px solid #000; width: 100%; margin-top: 5px;">
                 <tr>
                     <td>
-                        <span >Total : <%=iin.getTotal()%></span> <span style="margin-left: 200px;"> Payment : <%=(iin.getTotal() - iin.getOutstanding())%></span> <span style="margin-left: 200px;"> Outstanding : <%=iin.getOutstanding()%></span>
+                        <span >Total : Rs:<%=dFormat.format(iin.getTotal())%></span> <span style="margin-left: 150px;"> Payment : Rs:<%=dFormat.format(iin.getTotal() - iin.getOutstanding())%></span> <span style="margin-left: 150px;"> Outstanding : Rs:<%=dFormat.format(iin.getOutstanding())%></span>
                     </td>
                 </tr>
             </table>

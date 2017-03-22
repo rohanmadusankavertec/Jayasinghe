@@ -147,6 +147,7 @@ public class RegistrationController extends HttpServlet {
                 c.setEmail(Email);
                 c.setIsValid(true);
                 c.setAddedBy(user1);
+                c.setBalance(0.0);
                 String result = registrationdao.saveCustomer(c);
                 if (result.equals(VertecConstants.SUCCESS)) {
                     request.getSession().removeAttribute("Success_Message");

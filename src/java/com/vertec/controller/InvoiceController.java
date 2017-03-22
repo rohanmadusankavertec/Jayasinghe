@@ -7,6 +7,7 @@ package com.vertec.controller;
 
 import com.vertec.daoimpl.InvoiceDAOImpl;
 import com.vertec.daoimpl.RegistrationDAOImpl;
+import com.vertec.daoimpl.ReportDAOImpl;
 import com.vertec.hibe.model.Category;
 import com.vertec.hibe.model.Customer;
 import com.vertec.hibe.model.Invoice;
@@ -178,9 +179,7 @@ public class InvoiceController extends HttpServlet {
                         invoice.setTransport(Double.parseDouble(transport));
                         invoice.setInvoiceInfoId(invoiceinfo);
                         invoiceItemList.add(invoice);
-
                     }
-
                     invoiceinfo.setInvoiceCollection(invoiceItemList);
                     invoiceinfo.setAddedBy(user1);
                     invoiceinfo.setDate(new Date());
@@ -203,6 +202,7 @@ public class InvoiceController extends HttpServlet {
                     if (!customer.equals("")) {
                         int Customer = Integer.parseInt(customer);
                         invoiceinfo.setCustomerId(new Customer(Customer));
+                        registrationdao.CustomerWithdraw(new Customer(Customer), Double.parseDouble(total));
                     } else {
                         invoiceinfo.setCustomerId(null);
                     }
@@ -232,6 +232,8 @@ public class InvoiceController extends HttpServlet {
                     if (payType.equals("1")) {
                         pay.setIsValid(true);
                         pay.setPaymentTypeId(new PaymentType(1));
+                        int Customer = Integer.parseInt(customer);
+                        registrationdao.CustomerDeposit(new Customer(Customer), Double.parseDouble(payment));
                     } else {
                         pay.setIsValid(false);
                         pay.setPaymentTypeId(new PaymentType(2));
@@ -286,7 +288,8 @@ public class InvoiceController extends HttpServlet {
                 }
                 //View Payment Page
                 case "ToPayment": {
-                    System.out.println("To Print");
+                    List<Customer> customer = registrationdao.getListOfCustomer();
+                    request.setAttribute("customer", customer);
                     List<InvoiceInfo> invoice = invoicedao.getListOfOutstandingInvoiceInfo();
                     System.out.println(invoice);
                     request.setAttribute("invoice", invoice);
@@ -338,6 +341,12 @@ public class InvoiceController extends HttpServlet {
                     p.setDate(new Date());
                     p.setInvoiceInfoId(new InvoiceInfo(Integer.parseInt(id)));
                     if (payType.equals("1")) {
+                        InvoiceInfo i = invoicedao.getInvoiceInfoById(Integer.parseInt(id));
+                        if (i.getCustomerId() != null) {
+//                            registrationdao.CustomerDeposit(i.getCustomerId(), Double.parseDouble(payment));
+                        result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
+                    
+                        }
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(1));
                         p.setBank(null);
@@ -345,12 +354,77 @@ public class InvoiceController extends HttpServlet {
                         p.setChequeNo(null);
                         result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
                     } else if (payType.equals("2")) {
+                        InvoiceInfo i = invoicedao.getInvoiceInfoById(Integer.parseInt(id));
+                        if (i.getCustomerId() != null) {
+//                            registrationdao.CustomerDeposit(i.getCustomerId(), Double.parseDouble(payment));
+                        result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
+                    
+                        }
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(3));
                         p.setBank(null);
                         p.setChequeDate(null);
                         p.setChequeNo(null);
                         result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
+                    } else {
+                        p.setIsValid(false);
+                        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                        Date chequedate = null;
+                        try {
+                            chequedate = date.parse(chdate);
+                        } catch (java.text.ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                        p.setChequeDate(chequedate);
+                        p.setChequeNo(chno);
+                        p.setBank(bank);
+                        p.setPaymentTypeId(new PaymentType(2));
+                    }
+                    String result = invoicedao.savePayment(p);
+                    if (result.equals(VertecConstants.SUCCESS) && result2.equals(VertecConstants.SUCCESS)) {
+                        out.write(VertecConstants.SUCCESS);
+                    } else {
+                        out.write(VertecConstants.ERROR);
+                    }
+                    break;
+                }
+                //Save Payment
+                case "SaveCustomerPayment": {
+                    String cid = request.getParameter("cno").trim();
+                    String payType = request.getParameter("payType").trim();
+                    String bank = request.getParameter("bank").trim();
+                    String chdate = request.getParameter("chdate").trim();
+                    String chno = request.getParameter("chno").trim();
+                    String payment = request.getParameter("payment").trim();
+                    String crn = request.getParameter("crn").trim();
+
+                    String result2 = VertecConstants.SUCCESS;
+                    Payment p = new Payment();
+                    p.setCrn(crn);
+                    p.setAddedBy(user1);
+                    p.setAmount(Double.parseDouble(payment));
+                    p.setDate(new Date());
+                    p.setCustomerId(new Customer(Integer.parseInt(cid)));
+                    if (payType.equals("1")) {
+//                            registrationdao.CustomerDeposit(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
+                        
+                        p.setIsValid(true);
+                        p.setPaymentTypeId(new PaymentType(1));
+                        p.setBank(null);
+                        p.setChequeDate(null);
+                        p.setChequeNo(null);
+                        result2 = invoicedao.UpdateCustomersOutstanding(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
+                    
+//                        result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
+                    } else if (payType.equals("2")) {
+//                        registrationdao.CustomerDeposit(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
+                        
+                        p.setIsValid(true);
+                        p.setPaymentTypeId(new PaymentType(3));
+                        p.setBank(null);
+                        p.setChequeDate(null);
+                        p.setChequeNo(null);
+                        result2 = invoicedao.UpdateCustomersOutstanding(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
                     } else {
                         p.setIsValid(false);
                         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
