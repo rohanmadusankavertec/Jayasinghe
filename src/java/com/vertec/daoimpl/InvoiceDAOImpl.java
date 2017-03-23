@@ -48,9 +48,7 @@ public class InvoiceDAOImpl {
                 }
             }
         }
-
         return null;
-
     }
 
     public String savePayment(Payment payment) {
@@ -325,11 +323,11 @@ public class InvoiceDAOImpl {
                 query.executeUpdate();
                 transaction.commit();
                 Payment p = new InvoiceDAOImpl().getPaymentById(Integer.parseInt(id));
-                if((p.getCustomerId()!=null) |(p.getInvoiceInfoId().getCustomerId()!=null) ){
-                    if(p.getCustomerId()!=null){
-                    UpdateCustomersOutstanding(p.getCustomerId(), p.getAmount());
-                    }else if(p.getInvoiceInfoId().getCustomerId()!=null){
-                    UpdateCustomersOutstanding(p.getInvoiceInfoId().getCustomerId(), p.getAmount());
+                if ((p.getCustomerId() != null) | (p.getInvoiceInfoId().getCustomerId() != null)) {
+                    if (p.getCustomerId() != null) {
+                        UpdateCustomersOutstanding(p.getCustomerId(), p.getAmount());
+                    } else if (p.getInvoiceInfoId().getCustomerId() != null) {
+                        UpdateCustomersOutstanding(p.getInvoiceInfoId().getCustomerId(), p.getAmount());
                     }
                 }
                 return VertecConstants.SUCCESS;
@@ -476,37 +474,39 @@ public class InvoiceDAOImpl {
         Transaction transaction = session.beginTransaction();
         if (session != null) {
             try {
-                Query query = session.createQuery("SELECT ii FROM InvoiceInfo ii WHERE ii.customerId=:customer AND ii.outstanding>0 AND ii.isValid=isValid");
+                System.out.println("Payment is :" + payment);
+                Query query = session.createQuery("SELECT ii FROM InvoiceInfo ii WHERE ii.customerId=:customer AND ii.outstanding>0 AND ii.isValid=:isValid");
                 query.setParameter("customer", cus);
-                query.setParameter("isvalid", true);
+                query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
                 for (InvoiceInfo ii : inList) {
-                    double toPay=ii.getOutstanding();
-                    
+                    Transaction transaction2 = session.beginTransaction();
+                    double toPay = ii.getOutstanding();
+
                     Query query2 = session.createQuery("Update InvoiceInfo i set i.outstanding=:amount where i.id=:Id");
                     query2.setParameter("Id", ii.getId());
-                    query2.setParameter("amount", payment);
-                    
-                    if(toPay==payment){
-                    query2.setParameter("amount", payment);
-                    payment=0;
-                    }else if(toPay<payment){
-                    query2.setParameter("amount", toPay);
-                    payment-=toPay;
-                    }else{
-                    query2.setParameter("amount", (toPay-payment));
-                    payment=0;
+//                    query2.setParameter("amount", payment);
+
+                    if (toPay == payment) {
+                        query2.setParameter("amount", 0.0);
+                        payment = 0;
+                    } else if (toPay < payment) {
+                        query2.setParameter("amount", 0.0);
+                        payment -= toPay;
+                    } else if (toPay > payment){
+                        query2.setParameter("amount", (toPay - payment));
+                        payment = 0;
                     }
-                    
-                    
-                    if(payment>0){
-                    new RegistrationDAOImpl().CustomerDeposit(cus, payment);
-                    
-                    }
-                    
-                    
                     query2.executeUpdate();
-                    transaction.commit();
+                    transaction2.commit();
+                }
+                System.out.println("Payment is saving:" + payment);
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+                if (payment > 0) {
+                    new RegistrationDAOImpl().CustomerDeposit(cus, payment);
+
                 }
                 return VertecConstants.SUCCESS;
             } catch (Exception e) {

@@ -202,7 +202,7 @@ public class InvoiceController extends HttpServlet {
                     if (!customer.equals("")) {
                         int Customer = Integer.parseInt(customer);
                         invoiceinfo.setCustomerId(new Customer(Customer));
-                        registrationdao.CustomerWithdraw(new Customer(Customer), Double.parseDouble(total));
+//                        registrationdao.CustomerWithdraw(new Customer(Customer), Double.parseDouble(total));
                     } else {
                         invoiceinfo.setCustomerId(null);
                     }
@@ -218,6 +218,57 @@ public class InvoiceController extends HttpServlet {
                     }
                     invoiceinfo.setTotal(Double.parseDouble(total));
                     invoiceinfo.setOutstanding(Double.parseDouble(outstanding));
+                    if (!customer.equals("")) {
+                    double thisPayment = Double.parseDouble(payment);
+                    double thistotal = Double.parseDouble(total);
+
+                    if (thisPayment == thistotal) {
+                        System.out.println("Thispayment=ThisOutstanding");
+                        invoiceinfo.setOutstanding(0.0);
+                    } else if (thisPayment > thistotal) {
+                        System.out.println("Thispayment>ThisOutstanding");
+                        invoiceinfo.setOutstanding(0.0);
+                        double bal = thisPayment - thistotal;
+                        int Customer = Integer.parseInt(customer);
+                        invoicedao.UpdateCustomersOutstanding(new Customer(Customer), bal);
+                    } else if (thisPayment < thistotal) {
+                        System.out.println("Thispayment<ThisOutstanding");
+                        int Customer = Integer.parseInt(customer);
+                        double oldbal = registrationdao.getCustomerBalance(new Customer(Customer));
+
+                        if (oldbal >= 0) {
+
+                            double bal = oldbal + Double.parseDouble(payment);
+                            System.out.println("Balance Is : " + bal);
+                            if (bal == thistotal) {
+                                System.out.println("Balance=ThisOutstanding");
+                                invoiceinfo.setOutstanding(0.0);
+                                registrationdao.CustomerBalanceUpdate(new Customer(Customer), 0.0);
+                            } else if (bal > thistotal) {
+                                System.out.println("Balance>ThisOutstanding");
+                                invoiceinfo.setOutstanding(0.0);
+                                registrationdao.CustomerBalanceUpdate(new Customer(Customer), bal - thistotal);
+
+                            } else if (bal < thistotal) {
+                                System.out.println("Balance<ThisOutstanding");
+                                double due = thistotal - bal;
+                                invoiceinfo.setOutstanding(due);
+                                registrationdao.CustomerBalanceUpdate(new Customer(Customer), ((thistotal - bal) * -1));
+                            }
+                        } else {
+                            double bal =Double.parseDouble(payment);
+                            System.out.println("In FInal MEthod ");
+                            System.out.println("Balance Is : " + bal);
+                             if (bal < thistotal) {
+                                System.out.println("Balance<ThisOutstanding");
+                                double due = thistotal - bal;
+                                invoiceinfo.setOutstanding(due);
+                                registrationdao.CustomerDeposit(new Customer(Customer), ((thistotal - bal) * -1));
+                            }
+                        }
+
+                    }
+                    }
                     invoiceinfo.setIntime(reachedTime);
                     invoiceinfo.setLoadtime(loadedTime);
                     invoiceinfo.setIsValid(true);
@@ -232,8 +283,8 @@ public class InvoiceController extends HttpServlet {
                     if (payType.equals("1")) {
                         pay.setIsValid(true);
                         pay.setPaymentTypeId(new PaymentType(1));
-                        int Customer = Integer.parseInt(customer);
-                        registrationdao.CustomerDeposit(new Customer(Customer), Double.parseDouble(payment));
+//                        int Customer = Integer.parseInt(customer);
+//                        registrationdao.CustomerDeposit(new Customer(Customer), Double.parseDouble(payment));
                     } else {
                         pay.setIsValid(false);
                         pay.setPaymentTypeId(new PaymentType(2));
@@ -344,8 +395,8 @@ public class InvoiceController extends HttpServlet {
                         InvoiceInfo i = invoicedao.getInvoiceInfoById(Integer.parseInt(id));
                         if (i.getCustomerId() != null) {
 //                            registrationdao.CustomerDeposit(i.getCustomerId(), Double.parseDouble(payment));
-                        result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
-                    
+                            result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
+
                         }
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(1));
@@ -357,8 +408,8 @@ public class InvoiceController extends HttpServlet {
                         InvoiceInfo i = invoicedao.getInvoiceInfoById(Integer.parseInt(id));
                         if (i.getCustomerId() != null) {
 //                            registrationdao.CustomerDeposit(i.getCustomerId(), Double.parseDouble(payment));
-                        result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
-                    
+                            result2 = invoicedao.UpdateCustomersOutstanding(i.getCustomerId(), Double.parseDouble(payment));
+
                         }
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(3));
@@ -407,18 +458,18 @@ public class InvoiceController extends HttpServlet {
                     p.setCustomerId(new Customer(Integer.parseInt(cid)));
                     if (payType.equals("1")) {
 //                            registrationdao.CustomerDeposit(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
-                        
+
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(1));
                         p.setBank(null);
                         p.setChequeDate(null);
                         p.setChequeNo(null);
                         result2 = invoicedao.UpdateCustomersOutstanding(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
-                    
+
 //                        result2 = invoicedao.UpdateOutstanding(Double.parseDouble(payment), Integer.parseInt(id));
                     } else if (payType.equals("2")) {
 //                        registrationdao.CustomerDeposit(new Customer(Integer.parseInt(cid)), Double.parseDouble(payment));
-                        
+
                         p.setIsValid(true);
                         p.setPaymentTypeId(new PaymentType(3));
                         p.setBank(null);

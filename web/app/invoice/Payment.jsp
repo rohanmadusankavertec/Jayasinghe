@@ -44,24 +44,27 @@
     }
     //get payment's outstanding and balance
     function getBalance() {
-        var out = document.getElementById("outs").innerHTML;
-        var pay2 = document.getElementById("payment").value;
-        if (pay2 !== "") {
+        var pay = document.getElementById("payfor").value;
+        if (pay === "2") {
+            var out = document.getElementById("outs").innerHTML;
+            var pay2 = document.getElementById("payment").value;
+            if (pay2 !== "") {
 
-            if (!isNaN(out)) {
-                var pay = parseFloat(pay2);
-                var o2 = parseFloat(out);
+                if (!isNaN(out)) {
+                    var pay = parseFloat(pay2);
+                    var o2 = parseFloat(out);
 
-                if (o2 >= pay) {
-                    document.getElementById("balance2").innerHTML = "0000.00";
-                    document.getElementById("outs2").innerHTML = out - pay;
-                } else {
-                    document.getElementById("balance2").innerHTML = pay - out;
-                    document.getElementById("outs2").innerHTML = "0000.00";
+                    if (o2 >= pay) {
+                        document.getElementById("balance2").innerHTML = "0000.00";
+                        document.getElementById("outs2").innerHTML = out - pay;
+                    } else {
+                        document.getElementById("balance2").innerHTML = pay - out;
+                        document.getElementById("outs2").innerHTML = "0000.00";
+                    }
                 }
+            } else {
+                document.getElementById("outs2").innerHTML = out;
             }
-        } else {
-            document.getElementById("outs2").innerHTML = out;
         }
     }
 
@@ -102,15 +105,15 @@
         var pay = document.getElementById("payfor").value;
         if (pay === "1") {
             SaveCustomerPayment();
-        }else if(pay === "2"){
+        } else if (pay === "2") {
             SaveInvoicePayment();
-            
+
         }
     }
-    
-    
-    function SaveInvoicePayment(){
-        
+
+
+    function SaveInvoicePayment() {
+
 
         var ino = document.getElementById('ino').value;
         var payType = document.getElementById('payType').value;
@@ -153,10 +156,10 @@
                 }]
         });
 
-        
+
     }
-    
-    function SaveCustomerPayment(){
+
+    function SaveCustomerPayment() {
         var cno = document.getElementById('customer').value;
         var payType = document.getElementById('payType').value;
         var bank = document.getElementById('bank').value;
@@ -197,11 +200,11 @@
                 }]
         });
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
     function hideFields() {
@@ -209,13 +212,13 @@
         if (pay === "1") {
             document.getElementById('cusfield').className = 'item form-group';
             document.getElementById('infield').className = 'hidden';
-            
+
             document.getElementById('itfields').className = 'hidden';
             document.getElementById('paidfield').className = 'hidden';
             document.getElementById('cofield').className = 'hidden';
             document.getElementById('out2field').className = 'hidden';
             document.getElementById('balance2field').className = 'hidden';
-            
+
             document.getElementById("invoicetotal").innerHTML = "0000.00";
             document.getElementById("paid").innerHTML = "0000.00";
             document.getElementById("outs").innerHTML = "0000.00";
@@ -224,7 +227,7 @@
         } else {
             document.getElementById('cusfield').className = 'hidden';
             document.getElementById('infield').className = 'item form-group';
-            
+
             document.getElementById('itfields').className = 'item form-group';
             document.getElementById('paidfield').className = 'item form-group';
             document.getElementById('cofield').className = 'item form-group';

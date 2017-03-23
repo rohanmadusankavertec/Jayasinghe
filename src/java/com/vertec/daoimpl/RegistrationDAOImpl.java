@@ -624,4 +624,54 @@ public class RegistrationDAOImpl {
         }
         return null;
     }
+     public String CustomerBalanceUpdate(Customer c,double amount) {
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("Update Customer c set c.balance=:amount where c.id=:customer");
+                query.setParameter("amount", amount);
+                query.setParameter("customer", c.getId());
+                query.executeUpdate();
+                transaction.commit();
+                return VertecConstants.UPDATED;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return VertecConstants.ERROR;
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+        return null;
+    }
+     
+     
+     public double getCustomerBalance(Customer cus) {
+
+        Session session = NewHibernateUtil.getSessionFactory().openSession();
+        if (session != null) {
+            try {
+                Query query = session.createQuery("SELECT c.balance FROM Customer c WHERE c.id=:cid AND c.isValid=:isValid");
+                query.setParameter("cid", cus.getId());
+                query.setParameter("isValid", true);
+                double amount =(Double) query.uniqueResult();
+                
+                return amount;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            } finally {
+                if (session != null && session.isOpen()) {
+                    session.close();
+                }
+            }
+        }
+
+        return 0;
+    }
+     
+     
+     
 }
