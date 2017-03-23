@@ -164,7 +164,8 @@ public class InvoiceController extends HttpServlet {
                     String payment = jSONObject.get("payment").toString();
                     String outstanding = jSONObject.get("outstanding").toString();
                     String payType = jSONObject.get("payType").toString();
-
+                    System.out.println("Payment     "+payment);
+                    
                     JSONObject itemDetails = (JSONObject) jSONObject.get("items");
                     Collection<Invoice> invoiceItemList = new ArrayList<>();
                     InvoiceInfo invoiceinfo = new InvoiceInfo();
@@ -217,7 +218,7 @@ public class InvoiceController extends HttpServlet {
                         ex.printStackTrace();
                     }
                     invoiceinfo.setTotal(Double.parseDouble(total));
-                    invoiceinfo.setOutstanding(Double.parseDouble(outstanding));
+                    
                     if (!customer.equals("")) {
                     double thisPayment = Double.parseDouble(payment);
                     double thistotal = Double.parseDouble(total);
@@ -237,7 +238,6 @@ public class InvoiceController extends HttpServlet {
                         double oldbal = registrationdao.getCustomerBalance(new Customer(Customer));
 
                         if (oldbal >= 0) {
-
                             double bal = oldbal + Double.parseDouble(payment);
                             System.out.println("Balance Is : " + bal);
                             if (bal == thistotal) {
@@ -266,8 +266,10 @@ public class InvoiceController extends HttpServlet {
                                 registrationdao.CustomerDeposit(new Customer(Customer), ((thistotal - bal) * -1));
                             }
                         }
-
                     }
+                    }else{
+                        System.out.println("Outstanding : "+outstanding);
+                    invoiceinfo.setOutstanding(Double.parseDouble(total)-Double.parseDouble(payment));
                     }
                     invoiceinfo.setIntime(reachedTime);
                     invoiceinfo.setLoadtime(loadedTime);

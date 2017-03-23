@@ -34,8 +34,8 @@ public class InvoiceDAOImpl {
             try {
                 session.save(invoice);
                 session.flush();
-
                 transaction.commit();
+                session.clear();
                 return VertecConstants.SUCCESS;
 
             } catch (Exception e) {
@@ -59,6 +59,7 @@ public class InvoiceDAOImpl {
                 session.save(payment);
                 session.flush();
                 transaction.commit();
+                session.clear();
                 return VertecConstants.SUCCESS;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -80,6 +81,7 @@ public class InvoiceDAOImpl {
                 session.save(payment);
                 session.flush();
                 transaction.commit();
+                session.clear();
                 return VertecConstants.SUCCESS;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -469,7 +471,7 @@ public class InvoiceDAOImpl {
     }
 
     public String UpdateCustomersOutstanding(Customer cus, double payment) {
-
+        double dd=payment;
         Session session = NewHibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         if (session != null) {
@@ -480,7 +482,6 @@ public class InvoiceDAOImpl {
                 query.setParameter("isValid", true);
                 List<InvoiceInfo> inList = query.list();
                 for (InvoiceInfo ii : inList) {
-                    Transaction transaction2 = session.beginTransaction();
                     double toPay = ii.getOutstanding();
 
                     Query query2 = session.createQuery("Update InvoiceInfo i set i.outstanding=:amount where i.id=:Id");
@@ -498,14 +499,15 @@ public class InvoiceDAOImpl {
                         payment = 0;
                     }
                     query2.executeUpdate();
-                    transaction2.commit();
+                    
                 }
+                transaction.commit();
                 System.out.println("Payment is saving:" + payment);
                 if (session != null && session.isOpen()) {
                     session.close();
                 }
                 if (payment > 0) {
-                    new RegistrationDAOImpl().CustomerDeposit(cus, payment);
+                    new RegistrationDAOImpl().CustomerDeposit(cus, dd);
 
                 }
                 return VertecConstants.SUCCESS;

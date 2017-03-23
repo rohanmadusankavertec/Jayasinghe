@@ -355,6 +355,7 @@
         if (payment === "") {
             payment = "0";
         }
+        alert(payment);
         var outstanding = outstandingtotal;
         var pt = 0;
         var ptype = document.getElementById("cash");
